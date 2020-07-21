@@ -17,7 +17,7 @@ export class NavbarComponent implements OnInit {
   }
 
   showRegister() {
-    this.router.navigate(['/register']);
+    this.router.navigate(['/registration']);
   }
 
 

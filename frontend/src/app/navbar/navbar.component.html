@@ -21,7 +21,7 @@
                 </ul>
               </li>
 
-              <li><a [routerLink]="['/registration']">Registracija</a></li>
+              <li><a [routerLink]="['/registration']">Registration</a></li>
 
               <!--      <li *ngIf="sessionService.ulogovaniKorisnik === undefined"><a [routerLink]="['/registracija']">Welcome</a></li>
                      <li *ngIf="sessionService.ulogovaniKorisnik === undefined"><a [routerLink]="['/advertisement-list']">Advertisement List</a></li>
@@ -31,7 +31,7 @@
                     <li *ngIf="sessionService.isEndUser"><a [routerLink]="['/shoppingCart']"> -->
 
 
-              <li class="button" (click)=""><a>Requests</a></li>
+              <li class="button"><a>Requests</a></li>
 
             </ul>
             <!--          <ul class="nav navbar-nav">-->
@@ -47,8 +47,7 @@
             <!--            </li>-->
             <!--          </ul>-->
             <ul class="nav navbar-nav navbar-right">
-              <li class="button"></li><a><span class="glyphicon glyphicon-user"></span> Register</a>
-              </li>
+              <li class="button"><a><span class="glyphicon glyphicon-user"></span> Register</a></li>
               <li class="button"><a><span class="fa fa-sign-in "></span> Sign in</a></li>
               <li class="button" (click)="logOut()"><a><span class="fa fa-sign-out "></span> Sign out</a></li>
             </ul>
