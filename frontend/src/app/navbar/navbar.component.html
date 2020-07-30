@@ -21,7 +21,6 @@
                 </ul>
               </li>
 
-              <li><a [routerLink]="['/registration']">Registration</a></li>
 
               <!--      <li *ngIf="sessionService.ulogovaniKorisnik === undefined"><a [routerLink]="['/registracija']">Welcome</a></li>
                      <li *ngIf="sessionService.ulogovaniKorisnik === undefined"><a [routerLink]="['/advertisement-list']">Advertisement List</a></li>
@@ -47,8 +46,8 @@
             <!--            </li>-->
             <!--          </ul>-->
             <ul class="nav navbar-nav navbar-right">
-              <li class="button"><a><span class="glyphicon glyphicon-user"></span> Register</a></li>
-              <li class="button"><a><span class="fa fa-sign-in "></span> Sign in</a></li>
+              <li><a [routerLink]="['/registration']"><span class="glyphicon glyphicon-user"></span> Register</a></li>
+              <li><a [routerLink]="['/authentication']"><span class="fa fa-sign-in "></span> Sign in</a></li>
               <li class="button" (click)="logOut()"><a><span class="fa fa-sign-out "></span> Sign out</a></li>
             </ul>
           </div>

@@ -14,14 +14,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { RegistrationComponent } from './modules/register_users/registration.component';
+import { RegistrationComponent } from './modules/registration/registration.component';
+import { AuthenticationComponent } from './modules/authentication/authentication.component';
+
 import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    AuthenticationComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     ReactiveFormsModule,
     MatFormFieldModule,
     RouterModule.forRoot([
-      { path: 'registration', component: RegistrationComponent }
+      { path: 'registration', component: RegistrationComponent },
+      { path: 'authentication', component: AuthenticationComponent }
     ]),
   ],
 
