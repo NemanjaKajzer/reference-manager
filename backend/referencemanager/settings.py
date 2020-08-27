@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'referencemanager.applicationblocks',
     'corsheaders',
+    'multiselectfield',
 ]
 
 MIDDLEWARE = [
@@ -89,10 +90,10 @@ WSGI_APPLICATION = 'referencemanager.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gktbouqd',
-        'HOST': 'packy.db.elephantsql.com',
-        'USER': 'gktbouqd',
-        'PASSWORD': 'kkiqTTR89lErSSWa8xqxo4NT3SC167x8',
+        'NAME': 'refmngDB',
+        'HOST': '127.0.0.1',
+        'USER': 'postgres',
+        'PASSWORD': 'admin',
         'PORT': '5432'
     }
 }

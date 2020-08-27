@@ -17,6 +17,10 @@
             height: 100%;
             background: #7abecc !important;
         }
+        .center-div{
+            display: grid;
+            place-items: center;
+        }
     </style>
 </head>
 
@@ -24,7 +28,7 @@
 
 {%  include 'navbar.html' %}
     <h2>Upload</h2>
-
+<div class="center-div">
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="file" name="document">
@@ -33,7 +37,7 @@
     {% if url %}
     <p>Uploaded file: <a href="{{ url }}">{{ url }}</a></p>
     {% endif %}
-
+</div>
 </body>
 
 </html>

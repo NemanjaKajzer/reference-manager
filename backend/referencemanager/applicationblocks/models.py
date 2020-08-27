@@ -1,16 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import User
+from multiselectfield import MultiSelectField
 
-
-class Author(models.Model):
-    first_name = models.CharField(max_length=40, default='firstname')
-    last_name = models.CharField(max_length=40, default='lastname')
 
 class Editor(models.Model):
     first_name = models.CharField(max_length=40, default='')
     last_name = models.CharField(max_length=40, default='')
 
 class Team(models.Model):
-    author = models.ManyToManyField(Author)
+    name = models.CharField(unique=True, max_length=50, default='')
+    user = models.ManyToManyField(User)
 
 class Project(models.Model):
     team = models.ManyToManyField(Team)
@@ -20,8 +19,8 @@ class Rank(models.Model):
     code = models.CharField(unique=True, max_length=40)
 
 class Reference(models.Model):
-    author = models.ManyToManyField(Author, related_name='author_id', related_query_name='author_id')
-    editor = models.ManyToManyField(Editor, related_name='editor_id', related_query_name='editor_id')
+    uploadedBy = models.ManyToManyField(User, related_name='user_id', related_query_name='user_id')
+    editor = models.CharField(unique=True, max_length=300, default='')
     book_title = models.CharField(max_length=80, default='title')
     publisher = models.CharField(max_length=40, default='publisher')
     month = models.CharField(max_length=12, default='month')
