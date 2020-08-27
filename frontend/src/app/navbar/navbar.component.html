@@ -12,15 +12,15 @@
           <div class="navbar-collapse collapse" id="mobile_menu">
             <ul class="nav navbar-nav">
 
-              <li><a href="#">Home</a></li>
+              <li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 
-              <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">About Us <span class="caret"></span></a>
+              <!-- <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">About Us <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a href="#">About One</a></li>
                   <li><a href="#">About Two</a></li>
                 </ul>
-              </li>
-
+              </li> -->
+              <li><a [routerLink]="['/references']"><span class="glyphicon glyphicon-book"></span> References</a></li>
 
               <!--      <li *ngIf="sessionService.ulogovaniKorisnik === undefined"><a [routerLink]="['/registracija']">Welcome</a></li>
                      <li *ngIf="sessionService.ulogovaniKorisnik === undefined"><a [routerLink]="['/advertisement-list']">Advertisement List</a></li>
@@ -28,9 +28,6 @@
                   <li *ngIf="sessionService.ulogovaniKorisnik === undefined"><a [routerLink]="['/inbox']">Inbox</a></li>
                    <li *ngIf="sessionService.ulogovaniKorisnik === undefined"><a [routerLink]="['/requests']">Requests</a></li>
                     <li *ngIf="sessionService.isEndUser"><a [routerLink]="['/shoppingCart']"> -->
-
-
-              <li class="button"><a>Requests</a></li>
 
             </ul>
             <!--          <ul class="nav navbar-nav">-->

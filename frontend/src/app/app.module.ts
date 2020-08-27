@@ -16,6 +16,7 @@ import { AppComponent } from './app.component';
 
 import { RegistrationComponent } from './modules/registration/registration.component';
 import { AuthenticationComponent } from './modules/authentication/authentication.component';
+import { ReferenceComponent } from './modules/references/reference.component';
 
 import { NavbarComponent } from './navbar/navbar.component';
 
@@ -36,7 +37,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     MatFormFieldModule,
     RouterModule.forRoot([
       { path: 'registration', component: RegistrationComponent },
-      { path: 'authentication', component: AuthenticationComponent }
+      { path: 'authentication', component: AuthenticationComponent },
+      { path: 'references', component: ReferenceComponent }
     ]),
   ],
 
