@@ -10,6 +10,7 @@ router.register('users', views.UserViewSet)
 router.register('references', views.ReferenceViewSet)
 
 
+
 urlpatterns = [
     url('refmng/', include('referencemanager.applicationblocks.urls')),
     path('admin/', admin.site.urls),

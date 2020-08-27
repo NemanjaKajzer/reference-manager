@@ -1,7 +1,7 @@
 {% load static %}
 
 <style>
-  .hello-msg{
+  .hello-msg {
     font-size: 18px;
     color: #fff;
     margin-right: 20px;
@@ -9,8 +9,9 @@
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
- {% comment %} <img src="{% static 'images/logo.png' %}"> {% endcomment %}
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  {% comment %} <img src="{% static 'images/logo.png' %}"> {% endcomment %}
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
@@ -25,16 +26,19 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'teams' %}">Teams</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'ranks' %}">Ranks</a>
+      </li>
     </ul>
   </div>
 
-{%if request.user.is_authenticated%}
+  {%if request.user.is_authenticated%}
   <span class="hello-msg">Hello, {{request.user}}</span>
-  <span ><a  class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
-{% else %}
-<span ><a  class="hello-msg" href="{% url 'login' %}">Login</a></span>
-<span ><a  class="hello-msg" href="{% url 'register' %}">Register</a></span>
-{% endif %}
+  <span><a class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
+  {% else %}
+  <span><a class="hello-msg" href="{% url 'login' %}">Login</a></span>
+  <span><a class="hello-msg" href="{% url 'register' %}">Register</a></span>
+  {% endif %}
 
 
 </nav>

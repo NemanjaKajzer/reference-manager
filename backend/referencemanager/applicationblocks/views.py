@@ -25,7 +25,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
-from .models import Team
+from .models import Team, Rank, Reference
 from .forms import CreateUserForm
 
 BIB_FILE = '../references.bib'
@@ -52,7 +52,19 @@ class ReferenceViewSet(viewsets.ModelViewSet):
     # serializer_class = ReferenceSerializer
 
 @login_required(login_url='login')
+def rankCreationPage(request):
+    ranks = Rank.objects.all()
+    pp = pprint.PrettyPrinter(indent=4)
+    if (request.method == "POST"):
+        if request.POST.get("Create"):
+            rankCode = request.POST.get("rankCode")
+            Rank.objects.create(code = rankCode)
+
+    return render(request, 'ranks.html', {"ranks":ranks})
+
+@login_required(login_url='login')
 def teamCreationPage(request):
+    teams = Team.objects.all()
     users = User.objects.all()
     pp = pprint.PrettyPrinter(indent=4)
     if (request.method == "POST"):
@@ -63,7 +75,7 @@ def teamCreationPage(request):
                 if request.POST.get("c" + str(user.id)) == "clicked":
                     team.user.add(user)
 
-    return render(request, 'teams.html', {"users":users})
+    return render(request, 'teams.html', {"users":users, "teams":teams})
 
 def registerPage(request):
     form = CreateUserForm()
