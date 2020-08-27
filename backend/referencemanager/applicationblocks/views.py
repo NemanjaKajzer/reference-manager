@@ -25,7 +25,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
-from .models import Team, Rank, Reference
+from .models import Team, Rank, Reference, Project
 from .forms import CreateUserForm
 
 BIB_FILE = '../references.bib'
@@ -50,6 +50,22 @@ class ReferenceViewSet(viewsets.ModelViewSet):
     """
     queryset = Reference.objects.all().order_by('-id')
     # serializer_class = ReferenceSerializer
+
+@login_required(login_url='login')
+def projectCreationPage(request):
+    projects = Project.objects.all()
+    teams = Team.objects.all()
+
+    pp = pprint.PrettyPrinter(indent=4)
+    if (request.method == "POST"):
+        if request.POST.get("Create"):
+            projectName = request.POST.get("projectName")
+            project = Project.objects.create(code = projectName)
+            for team in teams:
+                if request.POST.get("c" + str(team.id)) == "clicked":
+                    project.team.add(team)
+
+    return render(request, 'projects.html', {"projects":projects, "teams":teams})
 
 @login_required(login_url='login')
 def rankCreationPage(request):

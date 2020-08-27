@@ -16,4 +16,5 @@ urlpatterns = [
     path('logout/', views.logoutUser, name='logout'),
     path('teams/', views.teamCreationPage, name='teams'),
     path('ranks/', views.rankCreationPage, name='ranks'),
+    path('projects/', views.projectCreationPage, name='projects'),
 ]
