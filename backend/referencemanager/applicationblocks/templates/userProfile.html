@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+        integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous" />
+
+    <style>
+
+    </style>
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+    <div class="row">
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>First Name: {{user.first_name}}</h5>
+                <h5>Last Name: {{user.last_name}}</h5>
+                <h5>E-mail: {{user.email}}</h5>
+                <h5>Username: {{user.username}}</h5>
+                <hr>
+                <a class="btn btn-outline-info  btn-sm btn-block" href="">Update User</a>
+                <a class="btn btn-outline-danger  btn-sm btn-block" href="">Delete User</a>
+
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>Teams</h5>
+                <hr>
+                {% for team in teams %}
+                <p><a href=" {% url 'team' team.id %}">Name: {{team.name}}</a></p>
+                {%endfor%}
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>Total References</h5>
+                <hr>
+                <h1 style="text-align: center;padding: 10px">{{reference_count}}</h1>
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="card card-body">
+                <form method="get">
+
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-md">
+            <div class="card card-body">
+                <table class="table table-sm">
+                    <tr>
+                        {% comment %} <th><a href=" {% url 'reference' reference.id %}">Title</a></th> {% endcomment %}
+                        <th>Title</th>
+                        <th>Rank</th>
+                        <th>Year</th>
+                        <th>ISBN</th>
+                        <th>DOI</th>
+                        <th>ISSN</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+
+                    {% for reference in references %}
+
+                    <tr>
+                        <td>{{reference.title}}</td>
+                        <td>{{reference.rank.code}}</td>
+                        <td>{{reference.year}}</td>
+                        <td>{{reference.isbn}}</td>
+                        <td>{{reference.doi}}</td>
+                        <td>{{reference.issn}}</td>
+                        <td><a class="btn btn-sm btn-info" href="">Update</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="">Remove</a></td>
+                    </tr>
+                    {% endfor %}
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

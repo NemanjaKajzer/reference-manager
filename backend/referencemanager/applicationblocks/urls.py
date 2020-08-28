@@ -14,7 +14,12 @@ urlpatterns = [
     path('login/', views.loginPage, name='login'),
     path('register/', views.registerPage, name='register'),
     path('logout/', views.logoutUser, name='logout'),
+    path('user/<str:pk>/', views.userProfilePage, name='user'),
     path('teams/', views.teamCreationPage, name='teams'),
+    path('team/<str:pk>/', views.teamProfilePage, name='team'), 
     path('ranks/', views.rankCreationPage, name='ranks'),
     path('projects/', views.projectCreationPage, name='projects'),
+    path('project/<str:pk>/', views.projectProfilePage, name='project'),
+    path('reference/<str:pk>/', views.referenceProfilePage, name='reference'),
+    #path('teams/<str:pk>/', views.teamCreationPage, name='teams'),        view ----> def teamCreationPage(request, pk)     team = Team.objects.get(id=pk)
 ]

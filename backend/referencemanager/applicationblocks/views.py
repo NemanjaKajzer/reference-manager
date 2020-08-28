@@ -59,8 +59,9 @@ def projectCreationPage(request):
     pp = pprint.PrettyPrinter(indent=4)
     if (request.method == "POST"):
         if request.POST.get("Create"):
-            projectName = request.POST.get("projectName")
-            project = Project.objects.create(code = projectName)
+            projectCode = request.POST.get("projectCode")
+            projectTitle = request.POST.get("projectTitle")
+            project = Project.objects.create(code = projectCode, title=projectTitle)
             for team in teams:
                 if request.POST.get("c" + str(team.id)) == "clicked":
                     project.team.add(team)
@@ -77,6 +78,61 @@ def rankCreationPage(request):
             Rank.objects.create(code = rankCode)
 
     return render(request, 'ranks.html', {"ranks":ranks})
+    
+@login_required(login_url='login')
+def referenceProfilePage(request, pk):
+    reference = Reference.objects.get(id=pk)
+    team = reference.team
+
+    return render(request, 'referenceProfile.html', {"team": team})
+
+
+@login_required(login_url='login')
+def teamProfilePage(request, pk):
+    team = Team.objects.get(id=pk)
+    users = team.user.all()
+    references = []
+    
+    for reference in Reference.objects.all():
+        if reference.team == team:
+            references.append(reference)
+
+    reference_count = references.count(id)
+
+    return render(request, 'teamProfile.html', {"users": users, "team": team, "references": references, "reference_count": reference_count})
+    
+@login_required(login_url='login')
+def userProfilePage(request, pk):
+    pp = pprint.PrettyPrinter(indent=4) 
+    user = User.objects.get(id=pk)
+    allTeams = Team.objects.all()
+    teams = []
+    references = []
+    for team in allTeams:
+        if user in team.user.all():
+            teams.append(team)
+
+    for reference in Reference.objects.all():
+        if user in reference.author:
+            references.append(reference)
+
+    reference_count = references.count(id)
+
+    return render(request, 'userProfile.html', {"user": user, "teams": teams, "references": references, "reference_count": reference_count})
+    
+@login_required(login_url='login')
+def projectProfilePage(request, pk):
+    project = Project.objects.get(id=pk)
+    teams = project.team.all()
+    references = []
+
+    for reference in Reference.objects.all():
+        if project == reference.project:
+            references.append(reference)
+
+    reference_count = references.count(id)
+
+    return render(request, 'projectProfile.html', {"project":project, "teams":teams, "references": references, "reference_count": reference_count})
 
 @login_required(login_url='login')
 def teamCreationPage(request):

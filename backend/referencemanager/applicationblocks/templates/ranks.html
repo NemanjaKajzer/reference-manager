@@ -144,12 +144,18 @@
                 <div class="d-flex justify-content-center">
                     <form method="POST" action="">
                         {% csrf_token %}
+                        <div style="text-align: right">
+                            <div>
+                                <label>Code: </label>
+                                <input type="text" , name="rankCode" required>
+                                <div>
+                                </div>
 
-                        <input type="text" , name="rankCode" required>
 
-                        <div class="d-flex justify-content-center mt-3 login_container">
-                            <button type="submit" class="login_btn" , name="Create" , value="create">Create</button>
-                        </div>
+                                <div class="d-flex justify-content-center mt-3 login_container">
+                                    <button type="submit" class="login_btn" , name="Create" ,
+                                        value="create">Create</button>
+                                </div>
                     </form>
                 </div>
 
