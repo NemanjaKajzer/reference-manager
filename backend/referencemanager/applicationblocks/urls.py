@@ -5,11 +5,9 @@ from django.urls import path
 from rest_framework.authtoken.views import ObtainAuthToken
 
 router = routers.DefaultRouter()
-router.register('users', views.UserViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('auth/', ObtainAuthToken.as_view()),
     path('upload/', views.upload, name='upload'),
     path('login/', views.loginPage, name='login'),
     path('register/', views.registerPage, name='register'),
@@ -21,5 +19,4 @@ urlpatterns = [
     path('projects/', views.projectCreationPage, name='projects'),
     path('project/<str:pk>/', views.projectProfilePage, name='project'),
     path('reference/<str:pk>/', views.referenceProfilePage, name='reference'),
-    #path('teams/<str:pk>/', views.teamCreationPage, name='teams'),        view ----> def teamCreationPage(request, pk)     team = Team.objects.get(id=pk)
 ]

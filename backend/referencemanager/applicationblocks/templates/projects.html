@@ -70,6 +70,27 @@
       font-size: 8pt;
       margin-bottom: 3em !important;
   }
+
+   #style-5::-webkit-scrollbar-track
+    {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+      background-color: #F5F5F5;
+    }
+
+    #style-5::-webkit-scrollbar
+    {
+      width: 10px;
+      background-color: #F5F5F5;
+    }
+
+    #style-5::-webkit-scrollbar-thumb
+    {
+      background-color: #0ae;
+      
+      background-image: -webkit-gradient(linear, 0 0, 0 100%,
+       color-stop(.5, rgba(255, 255, 255, .2)),
+       color-stop(.5, transparent), to(transparent));
+    }
 </style>
 </head>
 
@@ -95,20 +116,22 @@
     <div class="card card-body">
       <div class="list-type4">
         <ol>
-            {% for project in projects %}
-            <li><a href="{% url 'project' project.id %}"> {{project.code}} - {{project.title}}
+            <div id="style-5" style="overflow-y: scroll; height:700px;">
+                {% for project in projects %}
+                <li><a href="{% url 'project' project.id %}"> {{project.code}} - {{project.title}}
 
-            </a></li>
-            {% for team in project.team.all %}
-            <li class="sub-li"><a href="{% url 'team' team.id %}"> {{team.name}}
+                </a></li>
+                {% for team in project.team.all %}
+                <li class="sub-li"><a href="{% url 'team' team.id %}"> {{team.name}}
 
-            </a></li>
-            {% for user in team.user.all %}
-            <li class="sub-sub-li"><a href="{% url 'user' user.id %}"> {{user.first_name}} {{user.last_name}}</a></li>
-            {% endfor %}
-            {% endfor %}
-            <hr>
-            {% endfor %}
+                </a></li>
+                {% for user in team.user.all %}
+                <li class="sub-sub-li"><a href="{% url 'user' user.id %}"> {{user.first_name}} {{user.last_name}}</a></li>
+                {% endfor %}
+                {% endfor %}
+                <hr>
+                {% endfor %}
+            </div>
         </ol>
     </div>
 </div>
@@ -126,28 +149,30 @@
     <form method="POST" action="">
       {% csrf_token %}
       <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Add team(s) to project: </label>
-        <div class="col-sm-9">
-          {% for team in teams %}
-          <li class="check-li"><input type="checkbox", value="clicked" , name="c{{team.id}}"> {{team.name}}
-          </li>
-          {% endfor %}
+        <label class="col-sm-1 col-form-label">Code: </label>
+        <div class="col-sm-11" style="margin-bottom: 10px;">
+          <input type="text", class="form-control", name="projectCode" required>
       </div>
   </div>
-
-  <p> &nbsp;</p>
   <div class="form-group row">
     <label class="col-sm-1 col-form-label">Title: </label>
     <div class="col-sm-11" style="margin-bottom: 10px;">
       <input type="text", class="form-control", name="projectTitle" required>
   </div>
 </div>
+
 <div class="form-group row">
-    <label class="col-sm-1 col-form-label">Code: </label>
-    <div class="col-sm-11" style="margin-bottom: 10px;">
-      <input type="text", class="form-control", name="projectCode" required>
+    <label class="col-sm-3 col-form-label">Add team(s) to project: </label>
+    <div class="col-sm-9">
+        <div id="style-5" style="overflow-y: scroll; height:150px;">
+          {% for team in teams %}
+          <li class="check-li"><input type="checkbox", value="clicked" , name="c{{team.id}}"> {{team.name}}
+          </li>
+          {% endfor %}
+      </div>
   </div>
 </div>
+
 <p>&nbsp;</p>
 <div class="col-lg">
   <button type="submit", class="btn btn-outline-info btn-sm btn-block", name="Create" , value="save">Create</button>

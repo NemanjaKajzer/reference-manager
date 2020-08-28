@@ -32,7 +32,7 @@
                 <h5>Team members</h5>
                 <hr>
                 {%for user in team.user.all %}
-                <p><a href="{% url 'user' user.id %}">Name: {{user.first_name}} {{user.last_name}}</a></p>
+                <p>Name: <a href="{% url 'user' user.id %}">{{user.first_name}} {{user.last_name}}</a></p>
                 {%endfor%}
             </div>
         </div>

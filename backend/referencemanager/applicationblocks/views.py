@@ -30,27 +30,6 @@ from .forms import CreateUserForm
 
 BIB_FILE = '../references.bib'
 
-@permission_classes((AllowAny,))
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
-
-    
-
-
-
-class ReferenceViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows references to be viewed or edited.
-    """
-    queryset = Reference.objects.all().order_by('-id')
-    # serializer_class = ReferenceSerializer
-
 @login_required(login_url='login')
 def projectCreationPage(request):
     projects = Project.objects.all()
@@ -85,7 +64,6 @@ def referenceProfilePage(request, pk):
     team = reference.team
 
     return render(request, 'referenceProfile.html', {"team": team})
-
 
 @login_required(login_url='login')
 def teamProfilePage(request, pk):
@@ -186,8 +164,6 @@ def loginPage(request):
 def logoutUser(request):
 	logout(request)
 	return redirect('login')
-
-
 
 @login_required(login_url='login')
 def upload(request):

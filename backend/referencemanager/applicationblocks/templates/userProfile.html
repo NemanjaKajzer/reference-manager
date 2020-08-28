@@ -35,7 +35,7 @@
                 <h5>Teams</h5>
                 <hr>
                 {% for team in teams %}
-                <p><a href=" {% url 'team' team.id %}">Name: {{team.name}}</a></p>
+                <p>Name: <a href=" {% url 'team' team.id %}">{{team.name}}</a></p>
                 {%endfor%}
             </div>
         </div>
