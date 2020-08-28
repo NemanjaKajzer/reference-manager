@@ -192,7 +192,9 @@ def logoutUser(request):
 @login_required(login_url='login')
 def upload(request):
     context = {}
-    pp = pprint.PrettyPrinter(indent=4)   
+    pp = pprint.PrettyPrinter(indent=4)  
+    pp.pprint("udario") 
+    references = Reference.objects.all()
     if request.method == 'POST':
         uploaded_file = request.FILES['document']
         pp.pprint(uploaded_file.name)
@@ -374,7 +376,7 @@ def upload(request):
 
 
 
-    return render(request, 'upload.html')    
+    return render(request, 'upload.html', {"references": references})    
 
 def get_field(e, name):
     fields = [f for f in e.fields if f.name == name]

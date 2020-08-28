@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>User profile</title>
+    <title>Project profile</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -20,9 +20,7 @@
         <div class="col-md">
             <div class="card card-body">
                 <h5>Code: {{project.code}}</h5>
-                {% comment %} <h5>Last Name: {{user.last_name}}</h5>
-                <h5>E-mail: {{user.email}}</h5>
-                <h5>Username: {{user.username}}</h5> {% endcomment %}
+                <h5>Title: {{project.title}}</h5>
                 <hr>
                 <a class="btn btn-outline-info  btn-sm btn-block" href="">Update Project</a>
                 <a class="btn btn-outline-danger  btn-sm btn-block" href="">Delete Project</a>

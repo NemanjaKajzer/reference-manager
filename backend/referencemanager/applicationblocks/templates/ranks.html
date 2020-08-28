@@ -2,167 +2,129 @@
 <html>
 
 <head>
-    <title>Ranks</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
-        integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous" />
+  <title>Ranks</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+  integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+  integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous" />
 
-    <style>
-        body,
-        html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            background: #7abecc !important;
-        }
-
-        .user_card {
-            width: 350px;
-            margin-top: auto;
-            margin-bottom: auto;
-            background: #74cfbf;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            padding: 10px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
-                0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
-                0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
-                0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            border-radius: 5px;
-        }
-
-        .form_container {
-            margin-top: 20px;
-        }
-
-        #form-title {
-            color: #fff;
-        }
-
-        .login_btn {
-            width: 100%;
-            background: #33ccff !important;
-            color: white !important;
-        }
-
-        .login_btn:focus {
-            box-shadow: none !important;
-            outline: 0px !important;
-        }
+  <style>
 
 
-        .input-group-text {
-            background: #f7ba5b !important;
-            color: white !important;
-            border: 0 !important;
-            border-radius: 0.25rem 0 0 0.25rem !important;
-        }
+    ul,
+    li {
+      list-style-type: none;
+  }
 
-        .input_user,
-        .input_pass:focus {
-            box-shadow: none !important;
-            outline: 0px !important;
-        }
+  .check-li{
+      padding-top: calc(.375rem + 1px);
+  }
+  .list-type4 {
+      width: 100%;
+      margin: 0 auto;
+  }
 
-        #messages {
-            background-color: grey;
-            color: #fff;
-            padding: 10px;
-            margin-top: 10px;
-        }
+  .list-type4 ol {
+      counter-reset: li;
+      list-style: none;
+      *list-style: decimal;
+      font-size: 15px;
+      font-family: 'Raleway', sans-serif;
+      padding: 0;
+      margin-bottom: 4em;
+  }
 
-        ul,
-        li {
-            list-style-type: none;
-        }
+  .list-type4 a {
+      position: relative;
+      display: block;
+      padding: .4em .4em .4em 2em;
+      *padding: .4em;
+      margin: .5em 0;
+      background: #5975D9;
+      color: white;
+      text-decoration: none;
+      box-shadow: inset 0.5em 0 black;
+      -webkit-transition: box-shadow 1s;
+      transition: box-shadow 1s;
+  }
 
-        .list-type4 {
-            width: 410px;
-            margin: 0 auto;
-            float: left;
-        }
+  .list-type4 a:hover {
+      box-shadow: inset 2em 0 black;
+  }
 
-        .list-type4 ol {
-            counter-reset: li;
-            list-style: none;
-            *list-style: decimal;
-            font-size: 15px;
-            font-family: 'Raleway', sans-serif;
-            padding: 0;
-            margin-bottom: 4em;
-        }
 
-        .list-type4 a {
-            position: relative;
-            display: block;
-            padding: .4em .4em .4em 2em;
-            *padding: .4em;
-            margin: .5em 0;
-            background: #5975D9;
-            color: white;
-            text-decoration: none;
-            box-shadow: inset 0.5em 0 black;
-            -webkit-transition: box-shadow 1s;
-            transition: box-shadow 1s;
-        }
 
-        .list-type4 a:hover {
-            box-shadow: inset 2em 0 black;
-        }
-
-        .div-right {
-            float: left;
-            padding-left: 50px;
-        }
-    </style>
+  .sub-li {
+      padding-left: 50px;
+      padding-bottom: 10px;
+      height: 15px;
+      font-size: 8pt;
+      margin-bottom: 3em !important;
+      padding-top: 0 !important;
+  }
+</style>
 </head>
 
 <body>
-    {% include 'navbar.html' %}
+  {% include 'navbar.html' %}
+  <div class="row">
+    <div class="col-md">
+      <div class="card card-body">
+        <h5>Preview and/or add ranks</h5>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <div class="card card-body">
+              <form method="get">
 
-    <div class="list-type4">
-        <ol>
-            {% for rank in ranks %}
-            <li><a href="#"> {{rank.code}}
-                </a></li>
-            {% endfor %}
-        </ol>
-    </div>
-    <div class="div-right">
-        <div class="d-flex justify-content-center h-100">
-            <div class="user_card">
-                <div class="d-flex justify-content-center">
-                    <h3 id="form-title">Create a rank</h3>
-                </div>
-                <p> &nbsp;</p>
-                <div class="d-flex justify-content-center">
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                        <div style="text-align: right">
-                            <div>
-                                <label>Code: </label>
-                                <input type="text" , name="rankCode" required>
-                                <div>
-                                </div>
-
-
-                                <div class="d-flex justify-content-center mt-3 login_container">
-                                    <button type="submit" class="login_btn" , name="Create" ,
-                                        value="create">Create</button>
-                                </div>
-                    </form>
-                </div>
-
-            </div>
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
         </div>
     </div>
+</div>
+<div class="row">
+  <div class="col-md">
+    <div class="card card-body">
+      <div class="list-type4">
+        <ol>
+          {% for rank in ranks %}
+          <li><a href="#"> {{rank.code}}
+
+          </a></li>
+          
+          {% endfor %}
+      </ol>
+  </div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+
+<div class="col-md">
+  <div class="card card-body">
+    <h5>New rank</h5>
+    <hr>
+    <form method="POST" action="">
+      {% csrf_token %}
+
+      <div class="form-group row">
+        <label class="col-sm-1 col-form-label">Code: </label>
+        <div class="col-sm-11" style="margin-bottom: 10px;">
+          <input type="text", class="form-control", name="rankCode" required>
+      </div>
+      <p>&nbsp;</p>
+      <div class="col-lg">
+          <button type="submit", class="btn btn-outline-info btn-sm btn-block", name="Create" , value="save">Create</button>
+      </div>
+  </form>
+</div>
+</div>
 
 </body>
+
 
 </html>
