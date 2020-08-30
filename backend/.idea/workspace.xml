@@ -21,18 +21,8 @@
   <component name="ChangeListManager">
     <list default="true" id="97378626-47cf-4b14-a3e3-1aa643fca02d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/projectProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/projectProfile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/projects.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/projects.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/ranks.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/ranks.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teamProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teamProfile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teams.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teams.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/upload.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/userProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/userProfile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,9 +161,9 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Django Server.refmngserver" />
-      <item itemvalue="Django Server.backend" />
       <item itemvalue="Python.refmng" />
+      <item itemvalue="Django Server.backend" />
+      <item itemvalue="Django Server.refmngserver" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -188,7 +178,7 @@
       <workItem from="1598639173248" duration="1137000" />
       <workItem from="1598642663927" duration="6707000" />
       <workItem from="1598694903884" duration="11984000" />
-      <workItem from="1598781153724" duration="9486000" />
+      <workItem from="1598781153724" duration="9803000" />
     </task>
     <servers />
   </component>
