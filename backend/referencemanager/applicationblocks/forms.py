@@ -9,11 +9,3 @@ class CreateUserForm(UserCreationForm):
 		model = User
 		fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name']
 
-# class TeamForm(forms.Form):	
-# 	users = forms.MultipleChoiceField(
-#             choices=User.objects.all(),
-#             initial='0',
-#             widget=forms.SelectMultiple(),
-#             required=True,
-#             label='User',
-#         )

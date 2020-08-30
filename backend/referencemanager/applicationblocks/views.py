@@ -1,4 +1,3 @@
-
 from rest_framework import viewsets
 from referencemanager.applicationblocks.serializers import UserSerializer, ReferenceSerializer
 from .models import Reference
@@ -27,37 +26,69 @@ from django.contrib.auth import authenticate, login, logout
 
 from .models import Team, Rank, Reference, Project
 from .forms import CreateUserForm
+from .filters import TeamFilter, ProjectFilter, ReferenceByProjectFilter, ReferenceByRankFilter, ReferenceByTeamFilter, \
+    ReferenceByUserFilter, ReferenceFilter, RankFilter
 
-BIB_FILE = '../references.bib'
+#region Creation and preview pages
+
+@login_required(login_url='login')
+def teamCreationPage(request):
+    teams = Team.objects.all()
+    users = User.objects.all()
+
+    teamFilter = TeamFilter(request.GET, queryset=teams)
+    teams = teamFilter.qs
+
+    pp = pprint.PrettyPrinter(indent=4)
+    if (request.method == "POST"):
+        if request.POST.get("Create"):
+            teamName = request.POST.get("teamName")
+            team = Team.objects.create(name=teamName)
+            for user in users:
+                if request.POST.get("c" + str(user.id)) == "clicked":
+                    team.user.add(user)
+
+    return render(request, 'teams.html', {"users": users, "teams": teams, "teamFilter": teamFilter})
+
 
 @login_required(login_url='login')
 def projectCreationPage(request):
     projects = Project.objects.all()
     teams = Team.objects.all()
 
+    projectFilter = ProjectFilter(request.GET, queryset=projects)
+    projects = projectFilter.qs
+
     pp = pprint.PrettyPrinter(indent=4)
     if (request.method == "POST"):
         if request.POST.get("Create"):
             projectCode = request.POST.get("projectCode")
             projectTitle = request.POST.get("projectTitle")
-            project = Project.objects.create(code = projectCode, title=projectTitle)
+            project = Project.objects.create(code=projectCode, title=projectTitle)
             for team in teams:
                 if request.POST.get("c" + str(team.id)) == "clicked":
                     project.team.add(team)
 
-    return render(request, 'projects.html', {"projects":projects, "teams":teams})
+    return render(request, 'projects.html', {"projects": projects, "teams": teams, "projectFilter": projectFilter})
+
 
 @login_required(login_url='login')
 def rankCreationPage(request):
     ranks = Rank.objects.all()
+    rankFilter = RankFilter(request.GET, queryset=ranks)
+    ranks = rankFilter.qs
     pp = pprint.PrettyPrinter(indent=4)
     if (request.method == "POST"):
         if request.POST.get("Create"):
             rankCode = request.POST.get("rankCode")
-            Rank.objects.create(code = rankCode)
+            Rank.objects.create(code=rankCode)
 
-    return render(request, 'ranks.html', {"ranks":ranks})
-    
+    return render(request, 'ranks.html', {"ranks": ranks, "rankFilter": rankFilter})
+
+#endregion Creation and preview pages
+
+#region Profile pages
+
 @login_required(login_url='login')
 def referenceProfilePage(request, pk):
     reference = Reference.objects.get(id=pk)
@@ -65,23 +96,41 @@ def referenceProfilePage(request, pk):
 
     return render(request, 'referenceProfile.html', {"team": team})
 
+
 @login_required(login_url='login')
 def teamProfilePage(request, pk):
     team = Team.objects.get(id=pk)
     users = team.user.all()
-    references = []
-    
-    for reference in Reference.objects.all():
-        if reference.team == team:
-            references.append(reference)
 
-    reference_count = references.count(id)
+    references = Reference.objects.filter(team=team).all()
 
-    return render(request, 'teamProfile.html', {"users": users, "team": team, "references": references, "reference_count": reference_count})
-    
+    reference_count = len(references)
+
+    referenceFilter = ReferenceByTeamFilter(request.GET, queryset=references)
+    references = referenceFilter.qs
+
+    return render(request, 'teamProfile.html',
+                  {"users": users, "team": team, "references": references, "reference_count": reference_count,
+                   "referenceFilter": referenceFilter})
+
+
+@login_required(login_url='login')
+def rankProfilePage(request, pk):
+    rank = Rank.objects.get(id=pk)
+
+    references = Reference.objects.filter(rank=rank).all()
+
+    reference_count = len(references)
+
+    referenceFilter = ReferenceByRankFilter(request.GET, queryset=references)
+    references = referenceFilter.qs
+
+    return render(request, 'rankProfile.html',{"rank": rank, "references": references, "reference_count": reference_count,"referenceFilter": referenceFilter})
+
+
 @login_required(login_url='login')
 def userProfilePage(request, pk):
-    pp = pprint.PrettyPrinter(indent=4) 
+    pp = pprint.PrettyPrinter(indent=4)
     user = User.objects.get(id=pk)
     allTeams = Team.objects.all()
     teams = []
@@ -91,41 +140,38 @@ def userProfilePage(request, pk):
             teams.append(team)
 
     for reference in Reference.objects.all():
-        if user in reference.author:
+        if user in reference.authors.all():
             references.append(reference)
 
-    reference_count = references.count(id)
+    referenceFilter = ReferenceByTeamFilter(request.GET, queryset=Reference.objects.filter(
+        authors__username__icontains=user.username))
+    references = referenceFilter.qs
 
-    return render(request, 'userProfile.html', {"user": user, "teams": teams, "references": references, "reference_count": reference_count})
-    
+    reference_count = len(references)
+
+    return render(request, 'userProfile.html',
+                  {"user": user, "teams": teams, "references": references, "reference_count": reference_count,
+                   "referenceFilter": referenceFilter})
+
+
 @login_required(login_url='login')
 def projectProfilePage(request, pk):
     project = Project.objects.get(id=pk)
     teams = project.team.all()
     references = []
 
-    for reference in Reference.objects.all():
-        if project == reference.project:
-            references.append(reference)
+    referenceFilter = ReferenceByProjectFilter(request.GET, queryset=Reference.objects.filter(project=project))
+    references = referenceFilter.qs
 
-    reference_count = references.count(id)
+    reference_count = len(references)
 
-    return render(request, 'projectProfile.html', {"project":project, "teams":teams, "references": references, "reference_count": reference_count})
+    return render(request, 'projectProfile.html',
+                  {"project": project, "teams": teams, "references": references, "reference_count": reference_count,
+                   "referenceFilter": referenceFilter})
 
-@login_required(login_url='login')
-def teamCreationPage(request):
-    teams = Team.objects.all()
-    users = User.objects.all()
-    pp = pprint.PrettyPrinter(indent=4)
-    if (request.method == "POST"):
-        if request.POST.get("Create"):
-            teamName = request.POST.get("teamName")
-            team = Team.objects.create(name = teamName)
-            for user in users:
-                if request.POST.get("c" + str(user.id)) == "clicked":
-                    team.user.add(user)
+#endregion Profile pages
 
-    return render(request, 'teams.html', {"users":users, "teams":teams})
+#region Registration and authentication
 
 def registerPage(request):
     form = CreateUserForm()
@@ -138,50 +184,60 @@ def registerPage(request):
                 form.save()
                 return redirect('login')
 
-    context = {'form' :form}
+    context = {'form': form}
     return render(request, 'register.html', context)
 
+
 def loginPage(request):
-	if request.user.is_authenticated:
-		return redirect('upload')
-	else:
-		if request.method == 'POST':
-			username = request.POST.get('username')
-			password =request.POST.get('password')
+    if request.user.is_authenticated:
+        return redirect('upload')
+    else:
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
 
-			user = authenticate(request, username=username, password=password)
+            user = authenticate(request, username=username, password=password)
 
-			if user is not None:
-				login(request, user)
-				return redirect('upload')
-			else:
-				messages.info(request, 'Username OR password is incorrect')
+            if user is not None:
+                login(request, user)
+                return redirect('upload')
+            else:
+                messages.info(request, 'Username OR password is incorrect')
 
-		context = {}
-		return render(request, 'login.html', context)
+        context = {}
+        return render(request, 'login.html', context)
+
 
 @login_required(login_url='login')
 def logoutUser(request):
-	logout(request)
-	return redirect('login')
+    logout(request)
+    return redirect('login')
+
+#endregion Registration and authentication
+
+#region References upload
 
 @login_required(login_url='login')
 def upload(request):
     context = {}
-    pp = pprint.PrettyPrinter(indent=4)  
-    pp.pprint("udario") 
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint("udario")
     references = Reference.objects.all()
+    referenceFilter = ReferenceFilter(request.GET, queryset=references)
+    references = referenceFilter.qs
+
     if request.method == 'POST':
         uploaded_file = request.FILES['document']
         pp.pprint(uploaded_file.name)
         pp.pprint(uploaded_file.size)
-        bibfile = metamodel_for_language('bibtex').model_from_file('C:\\Users\\Korisnik\\Desktop\\Diplomski\\sladic.bib')
+        bibfile = metamodel_for_language('bibtex').model_from_file(
+            'C:\\Users\\Korisnik\\Desktop\\Diplomski\\sladic.bib')
         # bibfile = metamodel_for_language('bibtex').model_from_file(uploaded_file.file..getvalue())
 
         pp.pprint(uploaded_file.name)
         for e in bibfile.entries:
-             if e.__class__.__name__ == 'BibRefEntry':
-                
+            if e.__class__.__name__ == 'BibRefEntry':
+
                 author_field = get_field(e, 'author')
                 journal_field = get_field(e, 'journal')
                 localfile_field = get_field(e, 'localfile')
@@ -216,7 +272,7 @@ def upload(request):
                 series_field = get_field(e, 'series')
                 eid_field = get_field(e, 'eid')
 
-                #techreport
+                # techreport
                 address_field = get_field(e, 'address')
                 institution_field = get_field(e, 'institution')
 
@@ -224,7 +280,7 @@ def upload(request):
                     author_value = author_field.value
                 except:
                     author_value = ""
-                try:    
+                try:
                     journal_value = journal_field.value
                 except:
                     journal_value = ""
@@ -341,23 +397,23 @@ def upload(request):
                     institution_value = institution_field.value
                 except:
                     institution_value = ""
-                
-                #list of authors
+
+                # list of authors
                 authors = get_authors(author_field)
 
                 pp.pprint(authors)
                 pp.pprint(author_value)
-                
+
                 pp.pprint("                   ")
 
+    return render(request, 'upload.html', {"references": references, "referenceFilter": referenceFilter})
 
-
-    return render(request, 'upload.html', {"references": references})    
 
 def get_field(e, name):
     fields = [f for f in e.fields if f.name == name]
     if fields:
         return fields[0]
+
 
 def get_author(f):
     astr = f.value
@@ -367,6 +423,7 @@ def get_author(f):
         astr = astr.split(',')[0]
         astr = astr.replace(' ', '')
     return to_key(astr.split()[0])
+
 
 def get_authors(f):
     astr = f.value
@@ -382,3 +439,5 @@ def to_key(k):
     k = unidecode.unidecode(k.strip().lower())
     k = nonkeychars.sub('', k)
     return k
+
+#endregion References upload

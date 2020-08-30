@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'referencemanager.applicationblocks',
     'corsheaders',
-    'multiselectfield',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
