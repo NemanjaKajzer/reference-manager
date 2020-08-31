@@ -28,6 +28,12 @@ from .models import Team, Rank, Reference, Project
 from .forms import CreateUserForm
 from .filters import TeamFilter, ProjectFilter, ReferenceByProjectFilter, ReferenceByRankFilter, ReferenceByTeamFilter, \
     ReferenceByUserFilter, ReferenceFilter, RankFilter
+from temp import tempfile
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.conf import settings
+import os
+import time
 
 #region Creation and preview pages
 
@@ -228,13 +234,20 @@ def upload(request):
 
     if request.method == 'POST':
         uploaded_file = request.FILES['document']
-        pp.pprint(uploaded_file.name)
-        pp.pprint(uploaded_file.size)
-        bibfile = metamodel_for_language('bibtex').model_from_file(
-            'C:\\Users\\Korisnik\\Desktop\\Diplomski\\sladic.bib')
+
+        path = default_storage.save('tmp/references.bib', ContentFile(uploaded_file.read()))
+        #MP3(os.path.join(settings.MEDIA_ROOT, path))
+
+
+
+
+        path_to_file = default_storage.open(r'tmp\references.bib').name
+
+        pp.pprint(path_to_file)
+
+        bibfile = metamodel_for_language('bibtex').model_from_file(path_to_file)
         # bibfile = metamodel_for_language('bibtex').model_from_file(uploaded_file.file..getvalue())
 
-        pp.pprint(uploaded_file.name)
         for e in bibfile.entries:
             if e.__class__.__name__ == 'BibRefEntry':
 
@@ -400,11 +413,18 @@ def upload(request):
 
                 # list of authors
                 authors = get_authors(author_field)
+                resulting_authors=[]
+                for author in authors:
+                    author_without_space = author.lstrip().rstrip()
+                    resulting_authors.append(author_without_space)
 
-                pp.pprint(authors)
-                pp.pprint(author_value)
+
+                pp.pprint(resulting_authors)
+                # pp.pprint(author_value)
 
                 pp.pprint("                   ")
+                time.sleep(2)
+                path = default_storage.delete(r'tmp\references.bib')
 
     return render(request, 'upload.html', {"references": references, "referenceFilter": referenceFilter})
 
@@ -426,12 +446,15 @@ def get_author(f):
 
 
 def get_authors(f):
+    result = []
     astr = f.value
     if 'and ' in astr:
         astr = astr.split('and ')
-    if ',' in astr:
-        astr = astr.split(',')
-    return astr
+        result = astr
+    else:
+        result.append(astr)
+
+    return result
 
 
 def to_key(k):
