@@ -35,7 +35,29 @@ from django.conf import settings
 import os
 import time
 
-#region Creation and preview pages
+
+#region Deletion
+@login_required(login_url='login')
+def deleteRank(request, pk):
+    rank = Rank.objects.get(id=pk)
+    rank.delete()
+
+    return redirect('/refmng/ranks/')
+
+def deleteTeam(request, pk):
+    team = Team.objects.get(id=pk)
+    team.delete()
+
+    return redirect('/refmng/teams/')
+
+def deleteReference(request, pk):
+    reference = Reference.objects.get(id=pk)
+    reference.delete()
+
+    return redirect('/refmng/upload/')
+#endregion Deletion
+
+# region Creation and preview pages
 
 @login_required(login_url='login')
 def teamCreationPage(request):
@@ -54,6 +76,7 @@ def teamCreationPage(request):
                 if request.POST.get("c" + str(user.id)) == "clicked":
                     team.user.add(user)
 
+    users = users.order_by('last_name')
     return render(request, 'teams.html', {"users": users, "teams": teams, "teamFilter": teamFilter})
 
 
@@ -91,9 +114,10 @@ def rankCreationPage(request):
 
     return render(request, 'ranks.html', {"ranks": ranks, "rankFilter": rankFilter})
 
-#endregion Creation and preview pages
 
-#region Profile pages
+# endregion Creation and preview pages
+
+# region Profile pages
 
 @login_required(login_url='login')
 def referenceProfilePage(request, pk):
@@ -131,7 +155,9 @@ def rankProfilePage(request, pk):
     referenceFilter = ReferenceByRankFilter(request.GET, queryset=references)
     references = referenceFilter.qs
 
-    return render(request, 'rankProfile.html',{"rank": rank, "references": references, "reference_count": reference_count,"referenceFilter": referenceFilter})
+    return render(request, 'rankProfile.html',
+                  {"rank": rank, "references": references, "reference_count": reference_count,
+                   "referenceFilter": referenceFilter})
 
 
 @login_required(login_url='login')
@@ -175,9 +201,10 @@ def projectProfilePage(request, pk):
                   {"project": project, "teams": teams, "references": references, "reference_count": reference_count,
                    "referenceFilter": referenceFilter})
 
-#endregion Profile pages
 
-#region Registration and authentication
+# endregion Profile pages
+
+# region Registration and authentication
 
 def registerPage(request):
     form = CreateUserForm()
@@ -219,15 +246,15 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
-#endregion Registration and authentication
 
-#region References upload
+# endregion Registration and authentication
+
+# region References upload
 
 @login_required(login_url='login')
 def upload(request):
     context = {}
     pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint("udario")
     references = Reference.objects.all()
     referenceFilter = ReferenceFilter(request.GET, queryset=references)
     references = referenceFilter.qs
@@ -236,21 +263,14 @@ def upload(request):
         uploaded_file = request.FILES['document']
 
         path = default_storage.save('tmp/references.bib', ContentFile(uploaded_file.read()))
-        #MP3(os.path.join(settings.MEDIA_ROOT, path))
-
-
-
-
         path_to_file = default_storage.open(r'tmp\references.bib').name
 
-        pp.pprint(path_to_file)
-
         bibfile = metamodel_for_language('bibtex').model_from_file(path_to_file)
-        # bibfile = metamodel_for_language('bibtex').model_from_file(uploaded_file.file..getvalue())
 
         for e in bibfile.entries:
             if e.__class__.__name__ == 'BibRefEntry':
 
+                # region Field Assigning
                 author_field = get_field(e, 'author')
                 journal_field = get_field(e, 'journal')
                 localfile_field = get_field(e, 'localfile')
@@ -285,36 +305,37 @@ def upload(request):
                 series_field = get_field(e, 'series')
                 eid_field = get_field(e, 'eid')
 
-                # techreport
                 address_field = get_field(e, 'address')
                 institution_field = get_field(e, 'institution')
+                # endregion Field Assigning
 
+                # region Value Assigning
                 try:
-                    author_value = author_field.value
+                    author_value = author_field.value.lstrip().rstrip()
                 except:
                     author_value = ""
                 try:
-                    journal_value = journal_field.value
+                    journal_value = journal_field.value.lstrip().rstrip()
                 except:
                     journal_value = ""
                 try:
-                    localfile_value = localfile_field.value
+                    localfile_value = localfile_field.value.lstrip().rstrip()
                 except:
                     localfile_value = ""
                 try:
-                    pages_value = pages_field.value
+                    pages_value = pages_field.value.lstrip().rstrip()
                 except:
                     pages_value = ""
                 try:
-                    publisher_value = publisher_field.value
+                    publisher_value = publisher_field.value.lstrip().rstrip()
                 except:
                     publisher_value = ""
                 try:
-                    title_value = title_field.value
+                    title_value = title_field.value.lstrip().rstrip()
                 except:
                     title_value = ""
                 try:
-                    doi_value = doi_field.value
+                    doi_value = doi_field.value.lstrip().rstrip()
                 except:
                     doi_value = ""
                 try:
@@ -326,48 +347,48 @@ def upload(request):
                 except:
                     year_value = 0
                 try:
-                    rank_value = rank_field.value
+                    rank_value = rank_field.value.lstrip().rstrip()
                 except:
                     rank_value = ""
                 try:
-                    project_value = project_field.value
+                    project_value = project_field.value.lstrip().rstrip()
                 except:
                     project_value = ""
                 try:
-                    pages_value = pages_field.value
+                    pages_value = pages_field.value.lstrip().rstrip()
                 except:
                     pages_value = ""
 
                 try:
-                    booktitle_value = booktitle_field.value
+                    booktitle_value = booktitle_field.value.lstrip().rstrip()
                 except:
                     booktitle_value = ""
                 try:
-                    editor_value = editor_field.value
+                    editor_value = editor_field.value.lstrip().rstrip()
                 except:
                     editor_value = ""
                 try:
-                    isbn_value = isbn_field.value
+                    isbn_value = isbn_field.value.lstrip().rstrip()
                 except:
                     isbn_value = ""
                 try:
-                    month_value = month_field.value
+                    month_value = month_field.value.lstrip().rstrip()
                 except:
                     month_value = ""
                 try:
-                    issn_value = issn_field.value
+                    issn_value = issn_field.value.lstrip().rstrip()
                 except:
                     issn_value = ""
                 try:
-                    keywords_value = keywords_field.value
+                    keywords_value = keywords_field.value.lstrip().rstrip()
                 except:
                     keywords_value = ""
                 try:
-                    url_value = url_field.value
+                    url_value = url_field.value.lstrip().rstrip()
                 except:
                     url_value = ""
                 try:
-                    location_value = location_field.value
+                    location_value = location_field.value.lstrip().rstrip()
                 except:
                     location_value = ""
                 try:
@@ -375,58 +396,180 @@ def upload(request):
                 except:
                     number_value = 0
                 try:
-                    eprint_value = eprint_field.value
+                    eprint_value = eprint_field.value.lstrip().rstrip()
                 except:
                     eprint_value = ""
                 try:
-                    file_value = file_field.value
+                    file_value = file_field.value.lstrip().rstrip()
                 except:
                     file_value = ""
                 try:
-                    comment_value = comment_field.value
+                    comment_value = comment_field.value.lstrip().rstrip()
                 except:
                     comment_value = ""
                 try:
-                    note_value = note_field.value
+                    note_value = note_field.value.lstrip().rstrip()
                 except:
                     note_value = ""
                 try:
-                    owner_value = owner_field.value
+                    owner_value = owner_field.value.lstrip().rstrip()
                 except:
                     owner_value = ""
                 try:
-                    series_value = series_field.value
+                    series_value = series_field.value.lstrip().rstrip()
                 except:
                     series_value = ""
                 try:
-                    eid_value = eid_field.value
+                    eid_value = eid_field.value.lstrip().rstrip()
                 except:
                     eid_value = ""
                 try:
-                    address_value = address_field.value
+                    address_value = address_field.value.lstrip().rstrip()
                 except:
                     address_value = ""
                 try:
-                    institution_value = institution_field.value
+                    institution_value = institution_field.value.lstrip().rstrip()
                 except:
                     institution_value = ""
 
-                # list of authors
-                authors = get_authors(author_field)
-                resulting_authors=[]
-                for author in authors:
-                    author_without_space = author.lstrip().rstrip()
-                    resulting_authors.append(author_without_space)
 
+                if booktitle_value != "":
+                    title = booktitle_value
+                else:
+                    title = title_value
+                # endregion Value Assigning
 
-                pp.pprint(resulting_authors)
-                # pp.pprint(author_value)
+                # region Authors Processing
+                # gets list of authors (strings)
+                authors = get_users(author_field)
+                # trims all strings in a list and writes them to a new list (can't change strings)
+                resulting_authors = trim_all_strings(authors)
+                # finds user objects that have the same combination of first name and last name
+                authors_objects = get_user_objects(resulting_authors)
+                # endregion Authors Processing
 
-                pp.pprint("                   ")
+                # region Duplicate Checking
+                # if reference entry is a duplicate, then move on to the next entry
+                if check_if_duplicate(isbn_value, issn_value, doi_value, authors_objects, title_value) is True:
+                    continue
+                # endregion Duplicate Checking
+
+                # region Editors Processing
+                # gets list of editors (strings)
+                try:
+                    editors = get_users(editor_field)
+                except:
+                    editors = ''
+
+                # trims all strings in a list and writes them to a new list (can't change strings)
+                resulting_editors = trim_all_strings(editors)
+                # finds user objects that have the same combination of first name and last name
+                editors_objects = get_user_objects(resulting_editors)
+                # endregion Editors Processing
+
+                # region Rank Processing
+                rank = get_rank_object(rank_value)
+                # endregion Rank Processing
+
+                # region Team Processing
+                team = get_team_object(authors_objects)
+                # endregion Team Processing
+
+                # region Project Processing
+                project = get_project_object(project_value)
+                # endregion Project Processing
+
+                #region Reference Saving
+                reference = Reference.objects.create(team=team, project=project, rank=rank, book_title=title,
+                                                     publisher=publisher_value, month=month_value, journal=journal_value, year=year_value, volume=volume_value,
+                                                     isbn=isbn_value, issn=issn_value, doi=doi_value, local_file=localfile_value, file=file_value, url=url_value,pages=pages_value,
+                                                     keywords=keywords_value, location=location_value, number=number_value, eprint=eprint_value, comment=comment_value, note=note_value,
+                                                     owner=owner_value, series=series_value, eid=eid_value, address=address_value, institution=institution_value)
+
+                for author_object in authors_objects:
+                    reference.authors.add(author_object)
+
+                for editor_object in editors_objects:
+                    reference.editor.add(editor_object)
+                #endregion Reference Saving
+
                 time.sleep(2)
                 path = default_storage.delete(r'tmp\references.bib')
 
+    references = references.order_by('year')
     return render(request, 'upload.html', {"references": references, "referenceFilter": referenceFilter})
+
+
+# make new list with trimmed names of authors
+def trim_all_strings(strings):
+    resulting_authors = []
+    for author in strings:
+        author_without_space = author.lstrip().rstrip()
+        resulting_authors.append(author_without_space)
+
+    return resulting_authors
+
+
+# get list of user objects from names in bib file
+def get_user_objects(names):
+    authors_objects = []
+    for res_author in names:
+        for db_author in User.objects.all():
+            if res_author.lower() == (db_author.first_name + ' ' + db_author.last_name).lower():
+                authors_objects.append(db_author)
+
+    return authors_objects
+
+
+# get rank object from code in bib file
+def get_rank_object(rank_name):
+    for db_rank in Rank.objects.all():
+        if rank_name.lower() == db_rank.code.lower():
+            return db_rank
+
+    return None
+
+
+# get team object from authors in bib file
+def get_team_object(authors_objects):
+    for db_team in Team.objects.all():
+        if set(authors_objects) == set(db_team.user.all()):
+            return db_team
+    return None
+
+
+# get project object from code in bib file
+def get_project_object(project_code):
+    for db_project in Project.objects.all():
+        if project_code == db_project.code:
+            return db_project
+
+    return None
+
+
+def check_if_duplicate(isbn, issn, doi, authors, title):
+    # check if reference with the same isbn, issn or doi already exists
+    pp = pprint.PrettyPrinter(indent=4)
+    for db_reference in Reference.objects.all():
+        # pp.pprint(isbn.lower().lstrip().rstrip() + ' ' + db_reference.isbn.lower().lstrip().rstrip())
+        # pp.pprint(doi.lower().lstrip().rstrip() + ' ' + db_reference.doi.lower().lstrip().rstrip())
+        # pp.pprint(issn.lower().lstrip().rstrip() + ' ' + db_reference.issn.lower().lstrip().rstrip())
+        if isbn.lower().lstrip().rstrip() == db_reference.isbn.lower().lstrip().rstrip():
+            if (isbn != ''):
+                return True
+        if issn.lower().lstrip().rstrip() == db_reference.issn.lower().lstrip().rstrip():
+            if (issn != ''):
+                return True
+        if doi.lower().lstrip().rstrip() == db_reference.doi.lower().lstrip().rstrip():
+            if(doi != ''):
+                return True
+
+    # check if reference with the same authors and title exists
+    for db_reference in Reference.objects.all():
+        if authors == db_reference.authors and title.lower() == db_reference.book_title.lower():
+            return True
+
+    return False
 
 
 def get_field(e, name):
@@ -445,7 +588,7 @@ def get_author(f):
     return to_key(astr.split()[0])
 
 
-def get_authors(f):
+def get_users(f):
     result = []
     astr = f.value
     if 'and ' in astr:
@@ -463,4 +606,4 @@ def to_key(k):
     k = nonkeychars.sub('', k)
     return k
 
-#endregion References upload
+# endregion References upload

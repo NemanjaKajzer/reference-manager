@@ -22,7 +22,7 @@
             <h5>Team: {{team.name}}</h5>
             <hr>
             <a class="btn btn-outline-info  btn-sm btn-block" href="">Update Team</a>
-            <a class="btn btn-outline-danger  btn-sm btn-block" href="">Delete Team</a>
+            <a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'delete_team' team.id %}">Delete Team</a>
 
         </div>
     </div>

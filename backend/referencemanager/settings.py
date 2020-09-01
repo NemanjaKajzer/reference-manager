@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'referencemanager.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'refmngDB',
+        'NAME': 'reference_manager',
         'HOST': '127.0.0.1',
         'USER': 'postgres',
         'PASSWORD': 'admin',

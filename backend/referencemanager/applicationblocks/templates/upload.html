@@ -84,7 +84,7 @@
         <hr>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="file" name="document">
+            <input type="file" name="document" accept=".bib">
             <button type="submit">Upload file</button>
         </form>
         {% if url %}
@@ -207,7 +207,7 @@
                                     <td>{{reference.doi}}</td>
                                     <td>{{reference.issn}}</td>
                                     <td><a class="btn btn-sm btn-info" href="">Update</a></td>
-                                    <td><a class="btn btn-sm btn-danger" href="">Remove</a></td>
+                                    <td><a class="btn btn-sm btn-danger" href="{% url 'delete_reference' reference.id %}">Remove</a></td>
                                 </tr>
                                 {% endfor %}
 

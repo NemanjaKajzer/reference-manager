@@ -22,7 +22,7 @@
             <h5>Rank: {{rank.code}}</h5>
             <hr>
             <a class="btn btn-outline-info  btn-sm btn-block" href="">Update Rank</a>
-            <a class="btn btn-outline-danger  btn-sm btn-block" href="">Delete Rank</a>
+            <a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'delete_rank' rank.id %}">Delete Rank</a>
 
         </div>
     </div>
