@@ -36,7 +36,7 @@ import os
 import time
 
 
-#region Deletion
+# region Deletion
 @login_required(login_url='login')
 def deleteRank(request, pk):
     rank = Rank.objects.get(id=pk)
@@ -44,18 +44,22 @@ def deleteRank(request, pk):
 
     return redirect('/refmng/ranks/')
 
+
 def deleteTeam(request, pk):
     team = Team.objects.get(id=pk)
     team.delete()
 
     return redirect('/refmng/teams/')
 
+
 def deleteReference(request, pk):
     reference = Reference.objects.get(id=pk)
     reference.delete()
 
     return redirect('/refmng/upload/')
-#endregion Deletion
+
+
+# endregion Deletion
 
 # region Creation and preview pages
 
@@ -256,9 +260,15 @@ def upload(request):
     context = {}
     pp = pprint.PrettyPrinter(indent=4)
     references = Reference.objects.all()
+
+
+    reference_count = len(references)
     referenceFilter = ReferenceFilter(request.GET, queryset=references)
     references = referenceFilter.qs
-
+    successful = 0
+    unsuccessful = 0
+    success_message = ''
+    error_message = ''
     if request.method == 'POST':
         uploaded_file = request.FILES['document']
 
@@ -432,7 +442,6 @@ def upload(request):
                 except:
                     institution_value = ""
 
-
                 if booktitle_value != "":
                     title = booktitle_value
                 else:
@@ -451,6 +460,7 @@ def upload(request):
                 # region Duplicate Checking
                 # if reference entry is a duplicate, then move on to the next entry
                 if check_if_duplicate(isbn_value, issn_value, doi_value, authors_objects, title_value) is True:
+                    unsuccessful = unsuccessful + 1
                     continue
                 # endregion Duplicate Checking
 
@@ -479,25 +489,40 @@ def upload(request):
                 project = get_project_object(project_value)
                 # endregion Project Processing
 
-                #region Reference Saving
+                # region Reference Saving
                 reference = Reference.objects.create(team=team, project=project, rank=rank, book_title=title,
-                                                     publisher=publisher_value, month=month_value, journal=journal_value, year=year_value, volume=volume_value,
-                                                     isbn=isbn_value, issn=issn_value, doi=doi_value, local_file=localfile_value, file=file_value, url=url_value,pages=pages_value,
-                                                     keywords=keywords_value, location=location_value, number=number_value, eprint=eprint_value, comment=comment_value, note=note_value,
-                                                     owner=owner_value, series=series_value, eid=eid_value, address=address_value, institution=institution_value)
-
+                                                     publisher=publisher_value, month=month_value, journal=journal_value,
+                                                     year=year_value, volume=volume_value,
+                                                     isbn=isbn_value, issn=issn_value, doi=doi_value,
+                                                     local_file=localfile_value, file=file_value, url=url_value,
+                                                     pages=pages_value,
+                                                     keywords=keywords_value, location=location_value, number=number_value,
+                                                     eprint=eprint_value, comment=comment_value, note=note_value,
+                                                     owner=owner_value, series=series_value, eid=eid_value,
+                                                     address=address_value, institution=institution_value)
+                successful = successful + 1
                 for author_object in authors_objects:
                     reference.authors.add(author_object)
 
                 for editor_object in editors_objects:
                     reference.editor.add(editor_object)
-                #endregion Reference Saving
+                # endregion Reference Saving
 
-                time.sleep(2)
-                path = default_storage.delete(r'tmp\references.bib')
+        time.sleep(2)
+        path = default_storage.delete(r'tmp\references.bib')
+        if successful > 0:
+            success_message = 'Successfully uploaded ' + str(successful) + ' references.'
+        if unsuccessful > 0:
+            error_message = 'Skipped ' + str(unsuccessful) + ' references.'
 
+        return render(request, 'upload.html',
+                      {"references": references, "referenceFilter": referenceFilter, "reference_count": reference_count,
+                       "success_message": success_message, "error_message": error_message})
+
+    reference_count = len(references)
     references = references.order_by('year')
-    return render(request, 'upload.html', {"references": references, "referenceFilter": referenceFilter})
+    return render(request, 'upload.html',
+                  {"references": references, "referenceFilter": referenceFilter, "reference_count": reference_count})
 
 
 # make new list with trimmed names of authors
@@ -561,12 +586,12 @@ def check_if_duplicate(isbn, issn, doi, authors, title):
             if (issn != ''):
                 return True
         if doi.lower().lstrip().rstrip() == db_reference.doi.lower().lstrip().rstrip():
-            if(doi != ''):
+            if (doi != ''):
                 return True
 
-    # check if reference with the same authors and title exists
-    for db_reference in Reference.objects.all():
-        if authors == db_reference.authors and title.lower() == db_reference.book_title.lower():
+        # check if reference with the same authors and title exists
+        if list(authors) == list(db_reference.authors.all()) and title.lower() == db_reference.book_title.lower():
+            pp.pprint(title.lower() + '---' + db_reference.book_title.lower())
             return True
 
     return False

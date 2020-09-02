@@ -8,6 +8,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
           integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous"/>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design for Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.16/css/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 
     <style>
 
@@ -86,69 +95,71 @@
 
 <body>
 {% include 'navbar.html' %}
-<div class="row">
-    <div class="col-7">
-        <div class="card card-body">
-            <h5>Preview and/or add ranks</h5>
-            <hr>
-            <div class="row">
+<div class="col-md">
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-7">
+            <div class="card card-body">
+                <h5>Preview and/or add ranks</h5>
+                <hr>
+                <div class="row">
 
-                <div class="col-4">
-                    <h6>Filter existing ranks</h6>
-                    <div class="card card-body">
-                        <form method="get">
-                            <div class="form-group row">
-                                <div class="col-3">
-                                    <label class="form-label">Code:</label>
+                    <div class="col-4">
+                        <h6>Filter existing ranks</h6>
+                        <div class="card card-body">
+                            <form method="get">
+                                <div class="form-group row">
+                                    <div class="col-3">
+                                        <label class="form-label">Code:</label>
+                                    </div>
+                                    <div class="col-9">
+                                        {{rankFilter.form.code}}
+                                    </div>
                                 </div>
-                                <div class="col-9">
-                                    {{rankFilter.form.code}}
-                                </div>
-                            </div>
-                            <button class="btn btn-primary" type="submit">Search</button>
-                        </form>
+                                <button class="btn btn-outline-info btn-sm btn-block" type="submit">Search</button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-                <div class="col-8">
-                    <div class="card card-body">
-                        <div class="list-type4">
-                            <ol>
-                                <div id="style-5" style="overflow-y: scroll; height:700px;">
-                                    {% for rank in ranks %}
-                                    <li><a href="{% url 'rank' rank.id %}"> {{rank.code}}
+                    <div class="col-8">
+                        <div class="card card-body">
+                            <div class="list-type4">
+                                <ol>
+                                    <div id="style-5" style="overflow-y: scroll; height:700px;">
+                                        {% for rank in ranks %}
+                                        <li><a href="{% url 'rank' rank.id %}"> {{rank.code}}
 
-                                    </a></li>
+                                        </a></li>
 
-                                    {% endfor %}
-                                </div>
-                            </ol>
+                                        {% endfor %}
+                                    </div>
+                                </ol>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-5">
-        <div class="card card-body">
-            <h5>New rank</h5>
-            <hr>
-            <form method="POST" action="">
-                {% csrf_token %}
+        <div class="col-5">
+            <div class="card card-body">
+                <h5>New rank</h5>
+                <hr>
+                <form method="POST" action="">
+                    {% csrf_token %}
 
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Code: </label>
-                    <div class="col-sm-10" style="margin-bottom: 10px;">
-                        <input type="text" , class="form-control" , name="rankCode" required>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Code: </label>
+                        <div class="col-sm-10" style="margin-bottom: 10px;">
+                            <input type="text" , class="form-control" , name="rankCode" required>
+                        </div>
+                        <p>&nbsp;</p>
+                        <div class="col-lg">
+                            <button type="submit" , class="btn btn-outline-info btn-sm btn-block" , name="Create" ,
+                                    value="save">Create
+                            </button>
+                        </div>
                     </div>
-                    <p>&nbsp;</p>
-                    <div class="col-lg">
-                        <button type="submit" , class="btn btn-outline-info btn-sm btn-block" , name="Create" ,
-                                value="save">Create
-                        </button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>

@@ -41,6 +41,7 @@ class ReferenceFilter(django_filters.FilterSet):
     isbn = CharFilter(field_name='isbn', lookup_expr='icontains', label='ISBN: ')
     issn = CharFilter(field_name='issn', lookup_expr='icontains', label='ISSN: ')
     doi = CharFilter(field_name='doi', lookup_expr='icontains', label='DOI: ')
+    rank = ModelChoiceFilter(field_name='rank', queryset=Rank.objects.all(), label='Rank: ')
     author = ModelChoiceFilter(field_name='authors', queryset=User.objects.all(), label='User: ')
     team = ModelChoiceFilter(field_name='team', queryset=Team.objects.all(), label='Team: ')
     project = ModelChoiceFilter(field_name='project', queryset=Project.objects.all(), label='Project: ')
