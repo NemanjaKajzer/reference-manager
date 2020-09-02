@@ -9,7 +9,7 @@
                 <h5>Title: {{project.title}}</h5>
                 <hr>
                 <a class="btn btn-outline-info  btn-sm btn-block" href="">Update Project</a>
-                <a class="btn btn-outline-danger  btn-sm btn-block" href="">Delete Project</a>
+                <a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'delete_project' project.id %}">Delete Project</a>
 
             </div>
         </div>

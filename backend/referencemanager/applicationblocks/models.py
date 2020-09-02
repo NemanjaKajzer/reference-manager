@@ -29,8 +29,11 @@ class Project(models.Model):
     title = models.CharField(max_length=50, default='')
 
     def __str__(self):
+        title_to_show = ''
+        if len(self.title) > 12:
+            title_to_show = self.title[0:11]
+            return '{} - {}...'.format(self.code, title_to_show)
         return '{} - {}'.format(self.code, self.title)
-
 
 class Rank(models.Model):
     code = models.CharField(unique=True, max_length=90)

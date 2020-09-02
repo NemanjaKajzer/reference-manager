@@ -56,7 +56,13 @@ def deleteReference(request, pk):
     reference = Reference.objects.get(id=pk)
     reference.delete()
 
-    return redirect('/refmng/upload/')
+    return redirect('/refmng/references/')
+
+def deleteProject(request, pk):
+    project = Project.objects.get(id=pk)
+    project.delete()
+
+    return redirect('/refmng/projects/')
 
 
 # endregion Deletion
@@ -126,9 +132,8 @@ def rankCreationPage(request):
 @login_required(login_url='login')
 def referenceProfilePage(request, pk):
     reference = Reference.objects.get(id=pk)
-    team = reference.team
 
-    return render(request, 'referenceProfile.html', {"team": team})
+    return render(request, 'referenceProfile.html', {"reference": reference})
 
 
 @login_required(login_url='login')
@@ -213,7 +218,7 @@ def projectProfilePage(request, pk):
 def registerPage(request):
     form = CreateUserForm()
     if request.user.is_authenticated:
-        return redirect('upload')
+        return redirect('references')
     else:
         if (request.method == 'POST'):
             form = CreateUserForm(request.POST)
@@ -227,7 +232,7 @@ def registerPage(request):
 
 def loginPage(request):
     if request.user.is_authenticated:
-        return redirect('upload')
+        return redirect('references')
     else:
         if request.method == 'POST':
             username = request.POST.get('username')
@@ -237,7 +242,7 @@ def loginPage(request):
 
             if user is not None:
                 login(request, user)
-                return redirect('upload')
+                return redirect('references')
             else:
                 messages.info(request, 'Username OR password is incorrect')
 
@@ -256,7 +261,7 @@ def logoutUser(request):
 # region References upload
 
 @login_required(login_url='login')
-def upload(request):
+def referenceCreationPage(request):
     context = {}
     pp = pprint.PrettyPrinter(indent=4)
     references = Reference.objects.all()
@@ -515,13 +520,13 @@ def upload(request):
         if unsuccessful > 0:
             error_message = 'Skipped ' + str(unsuccessful) + ' references.'
 
-        return render(request, 'upload.html',
+        return render(request, 'references.html',
                       {"references": references, "referenceFilter": referenceFilter, "reference_count": reference_count,
                        "success_message": success_message, "error_message": error_message})
 
     reference_count = len(references)
     references = references.order_by('year')
-    return render(request, 'upload.html',
+    return render(request, 'references.html',
                   {"references": references, "referenceFilter": referenceFilter, "reference_count": reference_count})
 
 

@@ -1,0 +1,308 @@
+{% extends 'main_template.html' %}
+
+{% block content %}
+<div class="col-md">
+    <div class="row">
+        <div class="col-md">
+            <div class="card card-body">
+                <h3>Reference: {{reference.book_title}}</h3>
+                <hr>
+                <a class="btn btn-outline-success  btn-sm btn-block" href="">Download Reference</a>
+                <a class="btn btn-outline-info  btn-sm btn-block" href="">Update Reference</a>
+                <a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'delete_reference' reference.id %}">Delete
+                    Reference</a>
+
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>Team {{reference.team.name}}:</h5>
+                <hr>
+                {%for user in reference.team.user.all %}
+                <p>Name: <a href="{% url 'user' user.id %}">{{user.first_name}} {{user.last_name}}</a></p>
+                {%endfor%}
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>Project {{reference.project.code}}</h5>
+                <hr>
+                {%comment%}<p>Title: <a href="{% url 'user' user.id %}">{{reference.project.title}}</a></p>
+                {%endcomment%}
+                <p>Title: {{reference.project.title}}</p>
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                <h4>Reference attributes:</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card card-body">
+                <form method="get">
+                    {% if reference.rank %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Title:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.rank.code}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.publisher %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Publisher:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.publisher}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.month %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Month:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.month}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.journal %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Journal:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.journal}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.year %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Year:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.year}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.volume %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Volume:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.volume}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.isbn %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">ISBN:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.isbn}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.issn %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">ISSN:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.issn}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.doi %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">DOI:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.doi}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.local_file %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Local file:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.local_file}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.file %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">File:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.file}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.url %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Url:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.url}}
+                        </div>
+                    </div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card card-body">
+                <form method="get">
+                    {% if reference.pages %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Pages:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.pages}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.keywords %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Keywords:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.keywords}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.location %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Location:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.location}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.number %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Number:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.number}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.eprint %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Eprint:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.eprint}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.comment %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Comment:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.comment}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.note %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Note:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.note}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.owner %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Owner:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.owner}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.series %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Series:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.series}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.eid %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">EID:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.eid}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.address %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Address:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.address}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.institution %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Institution:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.institution}}
+                        </div>
+                    </div>
+                    {% endif %}
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

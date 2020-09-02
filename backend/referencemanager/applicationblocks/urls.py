@@ -8,7 +8,6 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('upload/', views.upload, name='upload'),
     path('login/', views.loginPage, name='login'),
     path('register/', views.registerPage, name='register'),
     path('logout/', views.logoutUser, name='logout'),
@@ -21,6 +20,8 @@ urlpatterns = [
     path('delete_rank/<str:pk>/', views.deleteRank, name='delete_rank'),
     path('projects/', views.projectCreationPage, name='projects'),
     path('project/<str:pk>/', views.projectProfilePage, name='project'),
+    path('delete_project/<str:pk>/', views.deleteProject, name='delete_project'),
+    path('references/', views.referenceCreationPage, name='references'),
     path('reference/<str:pk>/', views.referenceProfilePage, name='reference'),
     path('delete_reference/<str:pk>/', views.deleteReference, name='delete_reference'),
 ]

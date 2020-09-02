@@ -150,7 +150,7 @@
                             <table class="table table-sm">
                                 <tr>
                                     {% comment %}
-                                    <th><a href=" {% url 'reference' reference.id %}">Title</a></th>
+                                    <th>Title</th>
                                     {% endcomment %}
                                     <th>Title</th>
                                     <th>Rank</th>
@@ -166,7 +166,7 @@
                                 {% for reference in references %}
 
                                 <tr>
-                                    <td>{{reference.book_title}}</td>
+                                    <td><a href="{% url 'reference' reference.id %}">{{reference.book_title}}</a></td>
                                     <td>{{reference.rank.code}}</td>
                                     <td>{{reference.year}}</td>
                                     <td>{{reference.isbn}}</td>
