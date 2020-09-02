@@ -264,24 +264,29 @@ def logoutUser(request):
 def referenceCreationPage(request):
     context = {}
     pp = pprint.PrettyPrinter(indent=4)
+
     references = Reference.objects.all()
-
-
     reference_count = len(references)
     referenceFilter = ReferenceFilter(request.GET, queryset=references)
     references = referenceFilter.qs
+
     successful = 0
     unsuccessful = 0
     success_message = ''
     error_message = ''
+
     if request.method == 'POST':
+
+        #region Uploaded File Processing
         uploaded_file = request.FILES['document']
 
         path = default_storage.save('tmp/references.bib', ContentFile(uploaded_file.read()))
         path_to_file = default_storage.open(r'tmp\references.bib').name
 
         bibfile = metamodel_for_language('bibtex').model_from_file(path_to_file)
+        #endregion Uploaded File Processing
 
+        #region Entries Processing
         for e in bibfile.entries:
             if e.__class__.__name__ == 'BibRefEntry':
 
@@ -513,12 +518,23 @@ def referenceCreationPage(request):
                     reference.editor.add(editor_object)
                 # endregion Reference Saving
 
+        #endregion Entries Processing
+
         time.sleep(2)
         path = default_storage.delete(r'tmp\references.bib')
+
+        #region Messages
         if successful > 0:
-            success_message = 'Successfully uploaded ' + str(successful) + ' references.'
+            if successful == 1:
+                success_message = 'Successfully uploaded ' + str(successful) + ' reference.'
+            else:
+                success_message = 'Successfully uploaded ' + str(successful) + ' references.'
         if unsuccessful > 0:
-            error_message = 'Skipped ' + str(unsuccessful) + ' references.'
+            if unsuccessful == 1:
+                error_message = 'Skipped ' + str(unsuccessful) + ' reference.'
+            else:
+                error_message = 'Skipped ' + str(unsuccessful) + ' references.'
+        #endregion Messages
 
         return render(request, 'references.html',
                       {"references": references, "referenceFilter": referenceFilter, "reference_count": reference_count,

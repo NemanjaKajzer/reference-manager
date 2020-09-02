@@ -20,54 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97378626-47cf-4b14-a3e3-1aa643fca02d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../frontend/.editorconfig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/angular.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/browserslist" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/e2e/protractor.conf.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/e2e/src/app.e2e-spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/e2e/src/app.po.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/e2e/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/karma.conf.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/proxy.conf.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/app-routing.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/app.component.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/app.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/app.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/app.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/app.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/modules/authentication/authentication.component.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/modules/authentication/authentication.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/modules/authentication/authentication.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/modules/references/reference.component.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/modules/references/reference.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/modules/references/reference.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/modules/references/reference.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/modules/registration/registration.component.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/modules/registration/registration.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/modules/registration/registration.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/navbar/navbar.component.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/navbar/navbar.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/navbar/navbar.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/services/authentication.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/services/reference.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/services/register.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/assets/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/environments/environment.prod.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/environments/environment.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/main.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/polyfills.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/styles.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/test.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/tsconfig.app.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/tsconfig.spec.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/tslint.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/references.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/references.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/refmng.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/refmng.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/refmng.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/refmng.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,10 +176,10 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="JavaScript Debug.127.0.0.1:8000" />
-      <item itemvalue="Python.refmng" />
       <item itemvalue="Django Server.backend" />
       <item itemvalue="Django Server.refmngserver" />
+      <item itemvalue="JavaScript Debug.127.0.0.1:8000" />
+      <item itemvalue="Python.refmng" />
     </list>
     <recent_temporary>
       <list>
@@ -249,7 +206,7 @@
       <workItem from="1599036439523" duration="1618000" />
       <workItem from="1599038094052" duration="7572000" />
       <workItem from="1599046452045" duration="10551000" />
-      <workItem from="1599064047267" duration="6724000" />
+      <workItem from="1599064047267" duration="10472000" />
     </task>
     <servers />
   </component>
