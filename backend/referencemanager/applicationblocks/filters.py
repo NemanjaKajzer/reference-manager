@@ -37,12 +37,12 @@ class ProjectFilter(django_filters.FilterSet):
         fields = ''
 
 class ReferenceFilter(django_filters.FilterSet):
-    title = CharFilter(field_name='book_title', lookup_expr='icontains', label='Title: ')
+    title = CharFilter(field_name='title', lookup_expr='icontains', label='Title: ')
     isbn = CharFilter(field_name='isbn', lookup_expr='icontains', label='ISBN: ')
     issn = CharFilter(field_name='issn', lookup_expr='icontains', label='ISSN: ')
     doi = CharFilter(field_name='doi', lookup_expr='icontains', label='DOI: ')
     rank = ModelChoiceFilter(field_name='rank', queryset=Rank.objects.all(), label='Rank: ')
-    author = ModelChoiceFilter(field_name='authors', queryset=User.objects.all(), label='User: ')
+    author = ModelChoiceFilter(field_name='author', queryset=User.objects.all(), label='User: ')
     team = ModelChoiceFilter(field_name='team', queryset=Team.objects.all(), label='Team: ')
     project = ModelChoiceFilter(field_name='project', queryset=Project.objects.all(), label='Project: ')
     startYear = NumberFilter(field_name='year', lookup_expr='gte')
@@ -53,7 +53,7 @@ class ReferenceFilter(django_filters.FilterSet):
         fields = ''
 
 class ReferenceByUserFilter(django_filters.FilterSet):
-    title = CharFilter(field_name='book_title', lookup_expr='icontains')
+    title = CharFilter(field_name='title', lookup_expr='icontains')
     project = ModelChoiceFilter(field_name='project', queryset=Project.objects.all(), label='Project: ')
     startYear = NumberFilter(field_name='year', lookup_expr='gte')
     endYear = NumberFilter(field_name='year', lookup_expr='lte')
@@ -63,7 +63,7 @@ class ReferenceByUserFilter(django_filters.FilterSet):
         fields = ''
 
 class ReferenceByTeamFilter(django_filters.FilterSet):
-    title = CharFilter(field_name='book_title', lookup_expr='icontains', label='Title: ')
+    title = CharFilter(field_name='title', lookup_expr='icontains', label='Title: ')
     project = ModelChoiceFilter(field_name='project', queryset=Project.objects.all(), label='Project: ')
     startYear = NumberFilter(field_name='year', lookup_expr='gte', label='From year: ')
     endYear = NumberFilter(field_name='year', lookup_expr='lte', label='To year: ')
@@ -72,7 +72,7 @@ class ReferenceByTeamFilter(django_filters.FilterSet):
         fields = ''
 
 class ReferenceByProjectFilter(django_filters.FilterSet):
-    title = CharFilter(field_name='book_title', lookup_expr='icontains', label='Title: ')
+    title = CharFilter(field_name='title', lookup_expr='icontains', label='Title: ')
     user = ModelChoiceFilter(field_name='user', queryset=User.objects.all(), label='User: ')
     startYear = NumberFilter(field_name='year', lookup_expr='gte', label='From year: ')
     endYear = NumberFilter(field_name='year', lookup_expr='lte', label='To year: ')
@@ -81,7 +81,7 @@ class ReferenceByProjectFilter(django_filters.FilterSet):
         fields = ''
 
 class ReferenceByRankFilter(django_filters.FilterSet):
-    title = CharFilter(field_name='book_title', lookup_expr='icontains', label='Title: ')
+    title = CharFilter(field_name='title', lookup_expr='icontains', label='Title: ')
     project = ModelChoiceFilter(field_name='project', queryset=Project.objects.all(), label='Project: ')
     user = ModelChoiceFilter(field_name='user', queryset=User.objects.all(), label='User: ')
     team = ModelChoiceFilter(field_name='team', queryset=Team.objects.all(), label='Team: ')

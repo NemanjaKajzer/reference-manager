@@ -43,7 +43,7 @@ class Rank(models.Model):
 
 
 class Reference(models.Model):
-    authors = models.ManyToManyField(User, related_name='user_id', related_query_name='user_id')
+    author = models.ManyToManyField(User, related_name='user_id', related_query_name='user_id')
     team = models.ForeignKey(Team, null=True, related_name='team_id', related_query_name='team_id',
                              on_delete=models.SET_NULL, default=None)
     project = models.ForeignKey(Project, null=True, related_name='project_id', related_query_name='project_id',
@@ -51,7 +51,8 @@ class Reference(models.Model):
     rank = models.ForeignKey(Rank, null=True, related_name='rank_id', related_query_name='rank_id',
                              on_delete=models.SET_NULL, default=None)
     editor = models.ManyToManyField(User, related_name='editor_id', related_query_name='editor_id', default=None)
-    book_title = models.CharField(max_length=180, default='title')
+    title = models.CharField(max_length=180, default='title')
+    booktitle = models.CharField(max_length=180, default='booktitle')
     publisher = models.CharField(max_length=190, default='publisher')
     month = models.CharField(max_length=12, default='month')
     journal = models.CharField(max_length=190, default='journal')
@@ -77,6 +78,8 @@ class Reference(models.Model):
     eid = models.CharField(max_length=90, default='eid')
     address = models.CharField(max_length=180, default='address')
     institution = models.CharField(max_length=200, default='institution')
+    key = models.CharField(max_length=20, default='key')
+    type = models.CharField(max_length=30, default='type')
 
     def __str__(self):
         return '{}'.format(self.book_title)

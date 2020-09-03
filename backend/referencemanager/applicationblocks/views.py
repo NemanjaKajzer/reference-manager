@@ -34,30 +34,36 @@ from django.core.files.base import ContentFile
 from django.conf import settings
 import os
 import time
+from .decorators import *
 
 
 # region Deletion
 @login_required(login_url='login')
+@is_admin
 def deleteRank(request, pk):
     rank = Rank.objects.get(id=pk)
     rank.delete()
 
     return redirect('/refmng/ranks/')
 
-
+@login_required(login_url='login')
+@belongs_to_user
 def deleteTeam(request, pk):
     team = Team.objects.get(id=pk)
     team.delete()
 
     return redirect('/refmng/teams/')
 
-
+@login_required(login_url='login')
+@belongs_to_user
 def deleteReference(request, pk):
     reference = Reference.objects.get(id=pk)
     reference.delete()
 
     return redirect('/refmng/references/')
 
+@login_required(login_url='login')
+@belongs_to_user
 def deleteProject(request, pk):
     project = Project.objects.get(id=pk)
     project.delete()
@@ -181,11 +187,11 @@ def userProfilePage(request, pk):
             teams.append(team)
 
     for reference in Reference.objects.all():
-        if user in reference.authors.all():
+        if user in reference.author.all():
             references.append(reference)
 
     referenceFilter = ReferenceByTeamFilter(request.GET, queryset=Reference.objects.filter(
-        authors__username__icontains=user.username))
+        author__username__icontains=user.username))
     references = referenceFilter.qs
 
     reference_count = len(references)
@@ -206,48 +212,52 @@ def projectProfilePage(request, pk):
 
     reference_count = len(references)
 
+    authorized = False
+
+    for team in teams:
+        if request.user in team.user.all():
+            authorized = True
+            break
+
     return render(request, 'projectProfile.html',
                   {"project": project, "teams": teams, "references": references, "reference_count": reference_count,
-                   "referenceFilter": referenceFilter})
+                   "referenceFilter": referenceFilter, "authorized": authorized})
 
 
 # endregion Profile pages
 
 # region Registration and authentication
 
+
+@unauthenticated_user
 def registerPage(request):
     form = CreateUserForm()
-    if request.user.is_authenticated:
-        return redirect('references')
-    else:
-        if (request.method == 'POST'):
-            form = CreateUserForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect('login')
+
+    if (request.method == 'POST'):
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
 
     context = {'form': form}
     return render(request, 'register.html', context)
 
-
+@unauthenticated_user
 def loginPage(request):
-    if request.user.is_authenticated:
-        return redirect('references')
-    else:
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('password')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-            user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=username, password=password)
 
-            if user is not None:
-                login(request, user)
-                return redirect('references')
-            else:
-                messages.info(request, 'Username OR password is incorrect')
+        if user is not None:
+            login(request, user)
+            return redirect('references')
+        else:
+            messages.info(request, 'Username OR password is incorrect')
 
-        context = {}
-        return render(request, 'login.html', context)
+    context = {}
+    return render(request, 'login.html', context)
 
 
 @login_required(login_url='login')
@@ -256,6 +266,8 @@ def logoutUser(request):
     return redirect('login')
 
 
+def forbidden(request):
+    return render(request, 'forbidden.html')
 # endregion Registration and authentication
 
 # region References upload
@@ -290,6 +302,11 @@ def referenceCreationPage(request):
         for e in bibfile.entries:
             if e.__class__.__name__ == 'BibRefEntry':
 
+                #fields = get_fields(e)
+                key = e.key
+                type = e.type
+
+
                 # region Field Assigning
                 author_field = get_field(e, 'author')
                 journal_field = get_field(e, 'journal')
@@ -297,6 +314,7 @@ def referenceCreationPage(request):
                 pages_field = get_field(e, 'pages')
                 publisher_field = get_field(e, 'publisher')
                 title_field = get_field(e, 'title')
+                booktitle_field = get_field(e, 'booktitle')
                 doi_field = get_field(e, 'doi')
                 volume_field = get_field(e, 'volume')
                 year_field = get_field(e, 'year')
@@ -304,7 +322,6 @@ def referenceCreationPage(request):
                 project_field = get_field(e, 'project')
                 pages_field = get_field(e, 'pages')
 
-                booktitle_field = get_field(e, 'booktitle')
                 editor_field = get_field(e, 'editor')
                 isbn_field = get_field(e, 'isbn')
                 month_field = get_field(e, 'month')
@@ -452,10 +469,6 @@ def referenceCreationPage(request):
                 except:
                     institution_value = ""
 
-                if booktitle_value != "":
-                    title = booktitle_value
-                else:
-                    title = title_value
                 # endregion Value Assigning
 
                 # region Authors Processing
@@ -500,7 +513,7 @@ def referenceCreationPage(request):
                 # endregion Project Processing
 
                 # region Reference Saving
-                reference = Reference.objects.create(team=team, project=project, rank=rank, book_title=title,
+                reference = Reference.objects.create(team=team, project=project, rank=rank, title = title_value, booktitle=booktitle_value,
                                                      publisher=publisher_value, month=month_value, journal=journal_value,
                                                      year=year_value, volume=volume_value,
                                                      isbn=isbn_value, issn=issn_value, doi=doi_value,
@@ -509,14 +522,15 @@ def referenceCreationPage(request):
                                                      keywords=keywords_value, location=location_value, number=number_value,
                                                      eprint=eprint_value, comment=comment_value, note=note_value,
                                                      owner=owner_value, series=series_value, eid=eid_value,
-                                                     address=address_value, institution=institution_value)
+                                                     address=address_value, institution=institution_value, key=key, type=type)
                 successful = successful + 1
                 for author_object in authors_objects:
-                    reference.authors.add(author_object)
+                    reference.author.add(author_object)
 
                 for editor_object in editors_objects:
                     reference.editor.add(editor_object)
                 # endregion Reference Saving
+
 
         #endregion Entries Processing
 
@@ -545,6 +559,12 @@ def referenceCreationPage(request):
     return render(request, 'references.html',
                   {"references": references, "referenceFilter": referenceFilter, "reference_count": reference_count})
 
+
+
+def get_fields(e):
+    fields = [f for f in e.fields]
+    if fields:
+        return fields
 
 # make new list with trimmed names of authors
 def trim_all_strings(strings):
@@ -611,8 +631,7 @@ def check_if_duplicate(isbn, issn, doi, authors, title):
                 return True
 
         # check if reference with the same authors and title exists
-        if list(authors) == list(db_reference.authors.all()) and title.lower() == db_reference.book_title.lower():
-            pp.pprint(title.lower() + '---' + db_reference.book_title.lower())
+        if list(authors) == list(db_reference.author.all()) and title.lower() == db_reference.title.lower():
             return True
 
     return False

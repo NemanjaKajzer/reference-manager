@@ -8,9 +8,11 @@
             <div class="card card-body">
                 <h5>Rank: {{rank.code}}</h5>
                 <hr>
+                {% if request.user.is_staff %}
                 <a class="btn btn-outline-info  btn-sm btn-block" href="">Update Rank</a>
                 <a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'delete_rank' rank.id %}">Delete
                     Rank</a>
+                {% endif %}
 
             </div>
         </div>
@@ -96,21 +98,25 @@
                         <th>ISBN</th>
                         <th>DOI</th>
                         <th>ISSN</th>
+                        {%if request.user in reference.author.all or request.user.is_staff %}
                         <th>Update</th>
                         <th>Delete</th>
+                        {% endif %}
                     </tr>
 
                     {% for reference in references %}
 
                     <tr>
-                        <td>{{reference.book_title}}</td>
+                        <td>{{reference.title}}</td>
                         <td>{{reference.rank.code}}</td>
                         <td>{{reference.year}}</td>
                         <td>{{reference.isbn}}</td>
                         <td>{{reference.doi}}</td>
                         <td>{{reference.issn}}</td>
+                        {%if request.user in reference.author.all or request.user.is_staff %}
                         <td><a class="btn btn-sm btn-info" href="">Update</a></td>
                         <td><a class="btn btn-sm btn-danger" href="">Remove</a></td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
 

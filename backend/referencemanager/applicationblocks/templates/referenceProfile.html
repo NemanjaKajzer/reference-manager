@@ -8,9 +8,10 @@
                 <h3>Reference: {{reference.book_title}}</h3>
                 <hr>
                 <a class="btn btn-outline-success  btn-sm btn-block" href="">Download Reference</a>
+                {%if request.user in reference.author.all or request.user.is_staff %}
                 <a class="btn btn-outline-info  btn-sm btn-block" href="">Update Reference</a>
-                <a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'delete_reference' reference.id %}">Delete
-                    Reference</a>
+                <a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'delete_reference' reference.id %}">Delete Reference</a>
+                {% endif %}
 
             </div>
         </div>
@@ -24,18 +25,16 @@
                 {%endfor%}
             </div>
         </div>
-
+        {% if reference.project %}
         <div class="col-md">
             <div class="card card-body">
                 <h5>Project {{reference.project.code}}</h5>
                 <hr>
-                {%comment%}<p>Title: <a href="{% url 'user' user.id %}">{{reference.project.title}}</a></p>
-                {%endcomment%}
-                <p>Title: {{reference.project.title}}</p>
+                <p>Title: <a href="{% url 'user' user.id %}">{{reference.project.title}}</a></p>
             </div>
         </div>
+        {% endif %}
     </div>
-
 
     <br>
 
@@ -101,7 +100,7 @@
                         </div>
                     </div>
                     {% endif %}
-                    {% if reference.volume %}
+                    {% if reference.volume > 0 %}
                     <div class="form-group row">
                         <div class="col-3">
                             <label class="form-label">Volume:</label>

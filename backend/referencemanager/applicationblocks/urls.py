@@ -24,4 +24,5 @@ urlpatterns = [
     path('references/', views.referenceCreationPage, name='references'),
     path('reference/<str:pk>/', views.referenceProfilePage, name='reference'),
     path('delete_reference/<str:pk>/', views.deleteReference, name='delete_reference'),
+    path('forbidden/', views.forbidden, name='forbidden'),
 ]

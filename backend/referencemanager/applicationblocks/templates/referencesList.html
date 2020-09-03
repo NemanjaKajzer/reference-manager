@@ -1,0 +1,38 @@
+<div class="col-9">
+    <div class="card card-body">
+        <table class="table table-sm">
+            <tr>
+                {% comment %}
+                <th><a href=" {% url 'reference' reference.id %}">Title</a></th>
+                {% endcomment %}
+                <th>Title</th>
+                <th>Rank</th>
+                <th>Year</th>
+                <th>ISBN</th>
+                <th>DOI</th>
+                <th>ISSN</th>
+                {%if request.user in reference.author.all or request.user.is_staff %}
+                <th>Update</th>
+                <th>Delete</th>
+                {% endif %}
+            </tr>
+
+            {% for reference in references %}
+
+            <tr>
+                <td>{{reference.title}}</td>
+                <td>{{reference.rank.code}}</td>
+                <td>{{reference.year}}</td>
+                <td>{{reference.isbn}}</td>
+                <td>{{reference.doi}}</td>
+                <td>{{reference.issn}}</td>
+                {%if request.user in reference.author.all or request.user.is_staff %}
+                <td><a class="btn btn-sm btn-info" href="">Update</a></td>
+                <td><a class="btn btn-sm btn-danger" href="">Remove</a></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+</div>

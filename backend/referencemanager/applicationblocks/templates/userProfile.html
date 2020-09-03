@@ -78,40 +78,7 @@
                 </form>
             </div>
         </div>
-        <div class="col-9">
-            <div class="card card-body">
-                <table class="table table-sm">
-                    <tr>
-                        {% comment %}
-                        <th><a href=" {% url 'reference' reference.id %}">Title</a></th>
-                        {% endcomment %}
-                        <th>Title</th>
-                        <th>Rank</th>
-                        <th>Year</th>
-                        <th>ISBN</th>
-                        <th>DOI</th>
-                        <th>ISSN</th>
-                        <th>Update</th>
-                        <th>Delete</th>
-                    </tr>
-
-                    {% for reference in references %}
-
-                    <tr>
-                        <td>{{reference.book_title}}</td>
-                        <td>{{reference.rank.code}}</td>
-                        <td>{{reference.year}}</td>
-                        <td>{{reference.isbn}}</td>
-                        <td>{{reference.doi}}</td>
-                        <td>{{reference.issn}}</td>
-                        <td><a class="btn btn-sm btn-info" href="">Update</a></td>
-                        <td><a class="btn btn-sm btn-danger" href="">Remove</a></td>
-                    </tr>
-                    {% endfor %}
-
-                </table>
-            </div>
-        </div>
+        {% include 'referencesList.html' %}
     </div>
 </div>
 {% endblock %}

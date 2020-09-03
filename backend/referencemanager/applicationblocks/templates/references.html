@@ -148,45 +148,7 @@
                     </div>
 
 
-                    <div class="col-9">
-                        <div class="card card-body">
-                            <table class="table table-sm">
-                                <tr>
-                                    {% comment %}
-                                    <th>Title</th>
-                                    {% endcomment %}
-                                    <th>Title</th>
-                                    <th>Rank</th>
-                                    <th>Year</th>
-                                    <th>ISBN</th>
-                                    <th>DOI</th>
-                                    <th>ISSN</th>
-                                    <th>Team</th>
-                                    <!--                                    <th>Update</th>-->
-                                    <th>Delete</th>
-                                </tr>
-
-                                {% for reference in references %}
-
-                                <tr>
-                                    <td><a href="{% url 'reference' reference.id %}">{{reference.book_title}}</a></td>
-                                    <td>{{reference.rank.code}}</td>
-                                    <td>{{reference.year}}</td>
-                                    <td>{{reference.isbn}}</td>
-                                    <td>{{reference.doi}}</td>
-                                    <td>{{reference.issn}}</td>
-                                    <td>{{reference.team}}</td>
-                                    {%if request.user in reference.authors.all or request.user.username == "kajza"%}
-                                    <!--                                    <td><a class="btn btn-sm btn-info" href="">Update</a></td>-->
-                                    <td><a class="btn btn-sm btn-danger"
-                                           href="{% url 'delete_reference' reference.id %}">Remove</a></td>
-                                    {%endif%}
-                                </tr>
-                                {% endfor %}
-
-                            </table>
-                        </div>
-                    </div>
+                    {% include 'referencesList.html' %}
                 </div>
             </div>
         </div>

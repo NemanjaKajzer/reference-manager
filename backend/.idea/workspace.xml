@@ -21,9 +21,19 @@
   <component name="ChangeListManager">
     <list default="true" id="97378626-47cf-4b14-a3e3-1aa643fca02d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/filters.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/filters.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/projectProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/projectProfile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/projects.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/projects.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/rankProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/rankProfile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/ranks.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/ranks.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/referenceProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/referenceProfile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/references.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/references.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teamProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teamProfile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teams.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teams.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/userProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/userProfile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/refmng.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/refmng.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/refmng.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/refmng.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,9 +47,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="Python Script" />
         <option value="HTML File" />
       </list>
     </option>
@@ -206,7 +216,9 @@
       <workItem from="1599036439523" duration="1618000" />
       <workItem from="1599038094052" duration="7572000" />
       <workItem from="1599046452045" duration="10551000" />
-      <workItem from="1599064047267" duration="10472000" />
+      <workItem from="1599064047267" duration="10782000" />
+      <workItem from="1599122870118" duration="3541000" />
+      <workItem from="1599137805946" duration="7136000" />
     </task>
     <servers />
   </component>
@@ -310,10 +322,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="512" y="248" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598898167449" />
-    <state x="1920" y="0" width="1594" height="757" maximized="true" key="dock-window-1" timestamp="1599069340469">
+    <state x="1991" y="-9" width="1587" height="751" maximized="true" key="dock-window-1" timestamp="1599138434288">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="1920" y="0" width="1594" height="757" maximized="true" key="dock-window-1/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1599069340469" />
+    <state x="1991" y="-9" width="1587" height="751" maximized="true" key="dock-window-1/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1599138434288" />
     <state x="2237" y="-12" width="1618" height="699" maximized="true" key="dock-window-2" timestamp="1598979830880">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
@@ -322,10 +334,10 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="1946" y="-10" width="1618" height="699" maximized="true" key="dock-window-3/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598980423685" />
-    <state x="667" y="119" width="585" height="801" key="find.popup" timestamp="1598648382720">
+    <state x="667" y="119" width="585" height="801" key="find.popup" timestamp="1599124584525">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="667" y="119" width="585" height="801" key="find.popup/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598648382720" />
+    <state x="667" y="119" width="585" height="801" key="find.popup/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1599124584525" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1598647800213">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -333,6 +345,13 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/referencemanager/applicationblocks/decorators.py</url>
+          <line>27</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
