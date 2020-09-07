@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col-4">
                         <div class="card card-body">
-                            <h5>Filter existing ranks</h5>
+                            <h5>Filter existing teams</h5>
                             <hr>
                             <form method="get">
                                 <div class="form-group row">
@@ -66,7 +66,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Add user(s) to team: </label>
                         <div class="col-sm-9">
-                            <div class="style-5" style="overflow-y: scroll; height:150px;">
+                            <div class="style-5" style="overflow-y: scroll; height:400px;">
                                 {% for user in users %}
                                 {% if user.first_name != "" and user.last_name != "" %}
                                 <li class="check-li"><input type="checkbox" , value="clicked" , name="c{{user.id}}">

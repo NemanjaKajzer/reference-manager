@@ -531,6 +531,8 @@ def referenceCreationPage(request):
                     reference.editor.add(editor_object)
                 # endregion Reference Saving
 
+                reference_count = len(Reference.objects.all())
+
 
         #endregion Entries Processing
 

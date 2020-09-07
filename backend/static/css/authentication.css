@@ -5,14 +5,15 @@ html {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: #7abecc !important;
+    background: #33b5e5 !important;
 }
 
 .user_card {
-    width: 350px;
+    width: 100%;
+    height: 100%;
     margin-top: auto;
     margin-bottom: auto;
-    background: #74cfbf;
+    background: #00c851;
     position: relative;
     display: flex;
     justify-content: center;
@@ -37,7 +38,7 @@ html {
 
 .login_btn {
     width: 100%;
-    background: #5975D9 !important;
+    background: #33b5e5 !important;
     color: white !important;
 }
 
@@ -64,10 +65,11 @@ html {
 }
 
 #messages {
-    background-color: grey;
+    background-color: #ff3547;
     color: #fff;
     padding: 10px;
     margin-top: 10px;
 }
+
 
 /*#endregion Login*/

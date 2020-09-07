@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md">
             <div class="card card-body">
-                <h3>Reference: {{reference.book_title}}</h3>
+                <h3>{{reference.title}}</h3>
                 <hr>
                 <a class="btn btn-outline-success  btn-sm btn-block" href="">Download Reference</a>
                 {%if request.user in reference.author.all or request.user.is_staff %}
@@ -25,12 +25,13 @@
                 {%endfor%}
             </div>
         </div>
+
         {% if reference.project %}
         <div class="col-md">
             <div class="card card-body">
                 <h5>Project {{reference.project.code}}</h5>
                 <hr>
-                <p>Title: <a href="{% url 'user' user.id %}">{{reference.project.title}}</a></p>
+                <p>Title: <a href="{% url 'project' reference.project.id %}">{{reference.project.title}}</a></p>
             </div>
         </div>
         {% endif %}
@@ -53,7 +54,7 @@
                     {% if reference.rank %}
                     <div class="form-group row">
                         <div class="col-3">
-                            <label class="form-label">Title:</label>
+                            <label class="form-label">Rank:</label>
                         </div>
                         <div class="col-9">
                             {{reference.rank.code}}
