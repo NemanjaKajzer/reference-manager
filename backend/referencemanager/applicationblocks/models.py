@@ -41,8 +41,12 @@ class Rank(models.Model):
     def __str__(self):
         return '{}'.format(self.code)
 
+class ReferenceAttribute(models.Model):
+    name = models.CharField(max_length=200, default='key')
+    value = models.CharField(max_length=800, default='value')
 
 class Reference(models.Model):
+    title = models.CharField(max_length=180, default='title')
     author = models.ManyToManyField(User, related_name='user_id', related_query_name='user_id')
     team = models.ForeignKey(Team, null=True, related_name='team_id', related_query_name='team_id',
                              on_delete=models.SET_NULL, default=None)
@@ -50,36 +54,18 @@ class Reference(models.Model):
                                 on_delete=models.SET_NULL, default=None)
     rank = models.ForeignKey(Rank, null=True, related_name='rank_id', related_query_name='rank_id',
                              on_delete=models.SET_NULL, default=None)
-    editor = models.ManyToManyField(User, related_name='editor_id', related_query_name='editor_id', default=None)
-    title = models.CharField(max_length=180, default='title')
-    booktitle = models.CharField(max_length=180, default='booktitle')
-    publisher = models.CharField(max_length=190, default='publisher')
-    month = models.CharField(max_length=12, default='month')
-    journal = models.CharField(max_length=190, default='journal')
     year = models.IntegerField(default=2020)
-    volume = models.CharField(max_length=20, default='volume')
     isbn = models.CharField(max_length=90, default='isbn')
     issn = models.CharField(max_length=90, default='issn')
     doi = models.CharField(max_length=90, default='doi')
-
-    local_file = models.CharField(max_length=290, default='local_file')
-    file = models.CharField(max_length=290, default='file')
-    url = models.CharField(max_length=290, default='url')
-    pages = models.CharField(max_length=90, default='pages')
-    keywords = models.CharField(max_length=390, default='keywords')
-    location = models.CharField(max_length=160, default='location')
-    number = models.IntegerField(default=1)
-    eprint = models.CharField(max_length=90, default='eprint')
-
-    comment = models.CharField(max_length=90, default='comment')
-    note = models.CharField(max_length=390, default='note')
-    owner = models.CharField(max_length=90, default='owner')
-    series = models.CharField(max_length=360, default='series')
-    eid = models.CharField(max_length=90, default='eid')
-    address = models.CharField(max_length=180, default='address')
-    institution = models.CharField(max_length=200, default='institution')
+    editor = models.ManyToManyField(User, related_name='editor_id', related_query_name='editor_id', default=None)
     key = models.CharField(max_length=20, default='key')
     type = models.CharField(max_length=30, default='type')
+    attributes = models.ManyToManyField(ReferenceAttribute, related_name='editor_id', related_query_name='editor_id', default=None)
 
     def __str__(self):
-        return '{}'.format(self.book_title)
+        return '{}'.format(self.title)
+
+
+
+

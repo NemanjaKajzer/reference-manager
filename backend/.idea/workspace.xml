@@ -21,14 +21,13 @@
   <component name="ChangeListManager">
     <list default="true" id="97378626-47cf-4b14-a3e3-1aa643fca02d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/projectProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/projectProfile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/referenceProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/referenceProfile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/referencesList.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/referencesList.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/register.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teams.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teams.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teamProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teamProfile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/userProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/userProfile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/authentication.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/authentication.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/refmng.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/refmng.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/refmng.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/refmng.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -216,6 +215,7 @@
       <workItem from="1599209442020" duration="8294000" />
       <workItem from="1599231629653" duration="1221000" />
       <workItem from="1599414593771" duration="386000" />
+      <workItem from="1599484730907" duration="14937000" />
     </task>
     <servers />
   </component>

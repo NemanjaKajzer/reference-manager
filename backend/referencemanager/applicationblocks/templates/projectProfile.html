@@ -5,8 +5,9 @@
     <div class="row">
         <div class="col-md">
             <div class="card card-body">
-                <h5>Code: {{project.code}}</h5>
-                <h5>Title: {{project.title}}</h5>
+                <h4>{{project.title}}</h4>
+                <hr>
+                <h5>{{project.code}}</h5>
                 <hr>
                 {%if authorized is True or request.user.is_staff %}
                 <a class="btn btn-outline-info  btn-sm btn-block" href="">Update Project</a>
@@ -21,7 +22,7 @@
                 <h5>Teams</h5>
                 <hr>
                 {% for team in teams %}
-                <p>Name: <a href=" {% url 'team' team.id %}">{{team.name}}</a></p>
+                <p><a href=" {% url 'team' team.id %}">{{team.name}}</a></p>
                 {%endfor%}
             </div>
         </div>

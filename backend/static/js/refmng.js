@@ -1,4 +1,5 @@
 jQuery(function ($) {
+
     $('input[type="file"]').change(function (e) {
         var fileName = e.target.files[0].name;
         $('.selected-file-div').css('display', 'inline-block');
@@ -7,7 +8,7 @@ jQuery(function ($) {
         setTimeout(
             function () {
                 //$('.selected-file-div').css('display', 'none');
-                $('.selected-file-div').fadeOut();
+                $('.selected-file-div').slideUp();
             }, 10000);
     });
 
@@ -15,15 +16,12 @@ jQuery(function ($) {
         startTime = Date.now();
 
 
-     var success_interval = setInterval(function () {
+    var success_interval = setInterval(function () {
             if ($('.success-div').is(':visible')) {
-
-
                 setTimeout(
                     function () {
-                        $('.success-div').fadeOut();
+                        $('.success-div').slideUp();
                     }, 5000);
-
 
                 clearInterval(success_interval);
             } else {
@@ -43,7 +41,7 @@ jQuery(function ($) {
 
                 setTimeout(
                     function () {
-                        $('.error-div').fadeOut();
+                        $('.error-div').slideUp();
                     }, 5000);
 
 
@@ -58,5 +56,26 @@ jQuery(function ($) {
         },
         100 // 0.1 second (wait time between checks)
     );
+
+    //reference edit toggle
+    $(document).on('click', '#update-reference', function (e) {
+        $('#update-reference-row').css('display', 'flex');
+        $('#update-reference-row-label').css('display', 'flex');
+        $('#hide-update-reference').css('display', 'flex');
+
+        $('html, body').animate({
+            scrollTop: $("#update-reference-row").offset().top
+        }, 2000);
+    });
+
+    $(document).on('click', '#hide-update-reference', function (e) {
+        // $('#update-reference-row').css('display', 'none');
+        // $('#update-reference-row-label').css('display', 'none');
+        // $('#hide-update-reference').css('display', 'none');
+        $('#update-reference-row').slideUp()
+        $('#update-reference-row-label').slideUp()
+        $('#hide-update-reference').slideUp()
+    });
+
 
 })

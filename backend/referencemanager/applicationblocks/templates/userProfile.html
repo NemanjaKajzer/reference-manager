@@ -6,10 +6,10 @@
     <div class="row">
         <div class="col-md">
             <div class="card card-body">
-                <h5>First Name: {{user.first_name}}</h5>
-                <h5>Last Name: {{user.last_name}}</h5>
-                <h5>E-mail: {{user.email}}</h5>
-                <h5>Username: {{user.username}}</h5>
+                <h4>{{user.first_name}} {{user.last_name}}</h4>
+                <hr>
+                <h5>{{user.email}}</h5>
+                <h5 style="color: gray">{{user.username}}</h5>
                 <hr>
                 {%if request.user.id == user.id%}
                 <a class="btn btn-outline-info  btn-sm btn-block" href="">Update User</a>

@@ -139,7 +139,22 @@ def rankCreationPage(request):
 def referenceProfilePage(request, pk):
     reference = Reference.objects.get(id=pk)
 
-    return render(request, 'referenceProfile.html', {"reference": reference})
+    ranks = Rank.objects.all()
+    teams = Team.objects.all()
+    projects = Project.objects.all()
+
+    if (request.method == "POST"):
+        if request.POST.get("update"):
+            for key, value in request.POST.items():
+                print(key + ' ' + value)
+                if key not in ['team','project','rank','title','year','isbn','issn', 'doi','key','type','author','editor']:
+                    reference = update_attributes(reference, key, value)
+                else:
+                    reference = update_main_fields(reference, key, value)
+
+
+    return render(request, 'referenceProfile.html', {"reference": reference, "ranks": ranks, "teams": teams, "projects": projects})
+
 
 
 @login_required(login_url='login')
@@ -302,48 +317,22 @@ def referenceCreationPage(request):
         for e in bibfile.entries:
             if e.__class__.__name__ == 'BibRefEntry':
 
-                #fields = get_fields(e)
+                #region Reference Key And Type
                 key = e.key
                 type = e.type
-
+                #endregion Reference Key And Type
 
                 # region Field Assigning
                 author_field = get_field(e, 'author')
-                journal_field = get_field(e, 'journal')
-                localfile_field = get_field(e, 'localfile')
-                pages_field = get_field(e, 'pages')
-                publisher_field = get_field(e, 'publisher')
                 title_field = get_field(e, 'title')
-                booktitle_field = get_field(e, 'booktitle')
                 doi_field = get_field(e, 'doi')
-                volume_field = get_field(e, 'volume')
                 year_field = get_field(e, 'year')
                 rank_field = get_field(e, 'rank')
                 project_field = get_field(e, 'project')
-                pages_field = get_field(e, 'pages')
 
                 editor_field = get_field(e, 'editor')
                 isbn_field = get_field(e, 'isbn')
-                month_field = get_field(e, 'month')
-
                 issn_field = get_field(e, 'issn')
-                keywords_field = get_field(e, 'keywords')
-                url_field = get_field(e, 'url')
-
-                location_field = get_field(e, 'location')
-                number_field = get_field(e, 'number')
-                eprint_field = get_field(e, 'eprint')
-
-                file_field = get_field(e, 'file')
-                comment_field = get_field(e, 'comment')
-                note_field = get_field(e, 'note')
-
-                owner_field = get_field(e, 'owner')
-                series_field = get_field(e, 'series')
-                eid_field = get_field(e, 'eid')
-
-                address_field = get_field(e, 'address')
-                institution_field = get_field(e, 'institution')
                 # endregion Field Assigning
 
                 # region Value Assigning
@@ -352,33 +341,9 @@ def referenceCreationPage(request):
                 except:
                     author_value = ""
                 try:
-                    journal_value = journal_field.value.lstrip().rstrip()
-                except:
-                    journal_value = ""
-                try:
-                    localfile_value = localfile_field.value.lstrip().rstrip()
-                except:
-                    localfile_value = ""
-                try:
-                    pages_value = pages_field.value.lstrip().rstrip()
-                except:
-                    pages_value = ""
-                try:
-                    publisher_value = publisher_field.value.lstrip().rstrip()
-                except:
-                    publisher_value = ""
-                try:
                     title_value = title_field.value.lstrip().rstrip()
                 except:
                     title_value = ""
-                try:
-                    doi_value = doi_field.value.lstrip().rstrip()
-                except:
-                    doi_value = ""
-                try:
-                    volume_value = volume_field.value
-                except:
-                    volume_value = 0
                 try:
                     year_value = year_field.value
                 except:
@@ -392,83 +357,21 @@ def referenceCreationPage(request):
                 except:
                     project_value = ""
                 try:
-                    pages_value = pages_field.value.lstrip().rstrip()
-                except:
-                    pages_value = ""
-
-                try:
-                    booktitle_value = booktitle_field.value.lstrip().rstrip()
-                except:
-                    booktitle_value = ""
-                try:
-                    editor_value = editor_field.value.lstrip().rstrip()
-                except:
-                    editor_value = ""
-                try:
                     isbn_value = isbn_field.value.lstrip().rstrip()
                 except:
                     isbn_value = ""
-                try:
-                    month_value = month_field.value.lstrip().rstrip()
-                except:
-                    month_value = ""
                 try:
                     issn_value = issn_field.value.lstrip().rstrip()
                 except:
                     issn_value = ""
                 try:
-                    keywords_value = keywords_field.value.lstrip().rstrip()
+                    doi_value = doi_field.value.lstrip().rstrip()
                 except:
-                    keywords_value = ""
+                    doi_value = ""
                 try:
-                    url_value = url_field.value.lstrip().rstrip()
+                    editor_value = editor_field.value.lstrip().rstrip()
                 except:
-                    url_value = ""
-                try:
-                    location_value = location_field.value.lstrip().rstrip()
-                except:
-                    location_value = ""
-                try:
-                    number_value = number_field.value
-                except:
-                    number_value = 0
-                try:
-                    eprint_value = eprint_field.value.lstrip().rstrip()
-                except:
-                    eprint_value = ""
-                try:
-                    file_value = file_field.value.lstrip().rstrip()
-                except:
-                    file_value = ""
-                try:
-                    comment_value = comment_field.value.lstrip().rstrip()
-                except:
-                    comment_value = ""
-                try:
-                    note_value = note_field.value.lstrip().rstrip()
-                except:
-                    note_value = ""
-                try:
-                    owner_value = owner_field.value.lstrip().rstrip()
-                except:
-                    owner_value = ""
-                try:
-                    series_value = series_field.value.lstrip().rstrip()
-                except:
-                    series_value = ""
-                try:
-                    eid_value = eid_field.value.lstrip().rstrip()
-                except:
-                    eid_value = ""
-                try:
-                    address_value = address_field.value.lstrip().rstrip()
-                except:
-                    address_value = ""
-                try:
-                    institution_value = institution_field.value.lstrip().rstrip()
-                except:
-                    institution_value = ""
-
+                    editor_value = ""
                 # endregion Value Assigning
 
                 # region Authors Processing
@@ -513,22 +416,25 @@ def referenceCreationPage(request):
                 # endregion Project Processing
 
                 # region Reference Saving
-                reference = Reference.objects.create(team=team, project=project, rank=rank, title = title_value, booktitle=booktitle_value,
-                                                     publisher=publisher_value, month=month_value, journal=journal_value,
-                                                     year=year_value, volume=volume_value,
-                                                     isbn=isbn_value, issn=issn_value, doi=doi_value,
-                                                     local_file=localfile_value, file=file_value, url=url_value,
-                                                     pages=pages_value,
-                                                     keywords=keywords_value, location=location_value, number=number_value,
-                                                     eprint=eprint_value, comment=comment_value, note=note_value,
-                                                     owner=owner_value, series=series_value, eid=eid_value,
-                                                     address=address_value, institution=institution_value, key=key, type=type)
+                reference = Reference.objects.create(team=team, project=project, rank=rank, title = title_value, year=year_value,
+                                                     isbn=isbn_value, issn=issn_value, doi=doi_value, key=key, type=type)
                 successful = successful + 1
+
+                #saving authors in reference
                 for author_object in authors_objects:
                     reference.author.add(author_object)
 
+                #saving editors in reference
                 for editor_object in editors_objects:
                     reference.editor.add(editor_object)
+
+                #saving the rest of the attributes
+                fields = get_ref_attr_fields(e)
+                if fields:
+                    for field in fields:
+                        reference_attribute = ReferenceAttribute.objects.create(name=field.name, value=field.value)
+                        reference.attributes.add(reference_attribute)
+
                 # endregion Reference Saving
 
                 reference_count = len(Reference.objects.all())
@@ -567,6 +473,15 @@ def get_fields(e):
     fields = [f for f in e.fields]
     if fields:
         return fields
+
+def get_ref_attr_fields(e):
+    fields = [f for f in e.fields]
+    resulting_fields = []
+    if fields:
+        for field in fields:
+            if field.name not in ['team','project','rank','title','year','isbn','issn', 'doi','key','type','author','editor']:
+                resulting_fields.append(field)
+        return resulting_fields
 
 # make new list with trimmed names of authors
 def trim_all_strings(strings):
@@ -674,3 +589,28 @@ def to_key(k):
     return k
 
 # endregion References upload
+
+#region References Update
+def update_main_fields(reference, key, value):
+    if key in ['title','year','isbn','issn', 'doi','key','type']:
+        setattr(reference, key, value)
+        reference.save()
+    elif key == 'team':
+        setattr(reference, key, Team.objects.get(id=value))
+        reference.save()
+    elif key == 'rank':
+        setattr(reference, key, Rank.objects.get(code=value))
+        reference.save()
+    elif key == 'project':
+        setattr(reference, key, Project.objects.get(id=value))
+        reference.save()
+
+    return reference
+
+def update_attributes(reference, key, value):
+    for attribute in reference.attributes.all():
+        if attribute.name == key.rstrip(','):
+            attribute.value = value
+            attribute.save()
+    return reference
+#endregion References Update
