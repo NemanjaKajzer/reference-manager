@@ -19,17 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97378626-47cf-4b14-a3e3-1aa643fca02d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/projectProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/projectProfile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/rankProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/rankProfile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/referenceProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/referenceProfile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/references.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/references.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teamProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teamProfile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/userProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/userProfile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="97378626-47cf-4b14-a3e3-1aa643fca02d" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -220,7 +210,7 @@
       <workItem from="1599562138397" duration="782000" />
       <workItem from="1599562950956" duration="202000" />
       <workItem from="1599563177648" duration="133000" />
-      <workItem from="1599563331098" duration="14121000" />
+      <workItem from="1599563331098" duration="14274000" />
     </task>
     <servers />
   </component>
