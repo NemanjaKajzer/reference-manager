@@ -9,7 +9,7 @@
                 <h5>Rank: {{rank.code}}</h5>
                 <hr>
                 {% if request.user.is_staff %}
-                <a class="btn btn-outline-info  btn-sm btn-block" href="">Update Rank</a>
+                <button class="btn btn-outline-info  btn-sm btn-block" id="update">Update Rank</button>
                 <a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'delete_rank' rank.id %}">Delete
                     Rank</a>
                 {% endif %}
@@ -85,45 +85,60 @@
                 </form>
             </div>
         </div>
-        <div class="col-9">
+
+
+        {% include 'referencesList.html' %}
+    </div>
+
+    <div class="row" id="update-row-label" style="display: none">
+        <div class="col-12">
             <div class="card card-body">
-                <table class="table table-sm">
-                    <tr>
-                        {% comment %}
-                        <th><a href=" {% url 'reference' reference.id %}">Title</a></th>
-                        {% endcomment %}
-                        <th>Title</th>
-                        <th>Rank</th>
-                        <th>Year</th>
-                        <th>ISBN</th>
-                        <th>DOI</th>
-                        <th>ISSN</th>
-                        {%if request.user in reference.author.all or request.user.is_staff %}
-                        <th>Update</th>
-                        <th>Delete</th>
-                        {% endif %}
-                    </tr>
-
-                    {% for reference in references %}
-
-                    <tr>
-                        <td>{{reference.title}}</td>
-                        <td>{{reference.rank.code}}</td>
-                        <td>{{reference.year}}</td>
-                        <td>{{reference.isbn}}</td>
-                        <td>{{reference.doi}}</td>
-                        <td>{{reference.issn}}</td>
-                        {%if request.user in reference.author.all or request.user.is_staff %}
-                        <td><a class="btn btn-sm btn-info" href="">Update</a></td>
-                        <td><a class="btn btn-sm btn-danger" href="">Remove</a></td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-
-                </table>
+                <h4> Edit rank</h4>
             </div>
         </div>
     </div>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <div class="row" id="update-row" style="display: none">
+
+            <div class="col-12">
+                <div class="card card-body">
+
+
+                    {% if rank.code %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Code:</label>
+                        </div>
+                        <div class="col-9">
+                            <input type="text" , class="form-control" , name="code" , value="{{rank.code}}"
+                                   required>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row" id="hide-update" style="display: none">
+            <div class="col-12">
+                <div class="card card-body">
+                    <button id="submit-update-reference-btn" class="btn btn-outline-success  btn-sm btn-block"
+                            type="submit"
+                            name="update" value="update">SUBMIT
+                    </button>
+                    <button id="hide-edit-reference" class="btn btn-outline-info  btn-sm btn-block">HIDE EDITING
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </form>
 </div>
 
 {% endblock %}

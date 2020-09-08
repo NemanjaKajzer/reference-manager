@@ -38,6 +38,7 @@ from .decorators import *
 
 
 # region Deletion
+
 @login_required(login_url='login')
 @is_admin
 def deleteRank(request, pk):
@@ -46,6 +47,7 @@ def deleteRank(request, pk):
 
     return redirect('/refmng/ranks/')
 
+
 @login_required(login_url='login')
 @belongs_to_user
 def deleteTeam(request, pk):
@@ -53,6 +55,7 @@ def deleteTeam(request, pk):
     team.delete()
 
     return redirect('/refmng/teams/')
+
 
 @login_required(login_url='login')
 @belongs_to_user
@@ -69,7 +72,6 @@ def deleteProject(request, pk):
     project.delete()
 
     return redirect('/refmng/projects/')
-
 
 # endregion Deletion
 
@@ -130,7 +132,6 @@ def rankCreationPage(request):
 
     return render(request, 'ranks.html', {"ranks": ranks, "rankFilter": rankFilter})
 
-
 # endregion Creation and preview pages
 
 # region Profile pages
@@ -143,24 +144,32 @@ def referenceProfilePage(request, pk):
     teams = Team.objects.all()
     projects = Project.objects.all()
 
+    authorized = False
+
+    if checkIfUserIsAdmin(request.user) is True or request.user in reference.author.all():
+        authorized = True
+
     if (request.method == "POST"):
         if request.POST.get("update"):
-            for key, value in request.POST.items():
-                print(key + ' ' + value)
-                if key not in ['team','project','rank','title','year','isbn','issn', 'doi','key','type','author','editor']:
-                    reference = update_attributes(reference, key, value)
-                else:
-                    reference = update_main_fields(reference, key, value)
+            if authorized is True:
+                for key, value in request.POST.items():
+                    print(key + ' ' + value)
+                    if key not in ['team','project','rank','title','year','isbn','issn', 'doi','key','type','author','editor']:
+                        reference = update_attributes(reference, key, value)
+                    else:
+                        reference = update_main_fields(reference, key, value)
+            else:
+                return redirect('forbidden')
 
 
     return render(request, 'referenceProfile.html', {"reference": reference, "ranks": ranks, "teams": teams, "projects": projects})
 
 
-
 @login_required(login_url='login')
 def teamProfilePage(request, pk):
     team = Team.objects.get(id=pk)
-    users = team.user.all()
+    team_users = team.user.all()
+    users = User.objects.all()
 
     references = Reference.objects.filter(team=team).all()
 
@@ -169,8 +178,35 @@ def teamProfilePage(request, pk):
     referenceFilter = ReferenceByTeamFilter(request.GET, queryset=references)
     references = referenceFilter.qs
 
+    authorized = False
+
+    if request.user in team.user.all() or checkIfUserIsAdmin(request.user) is True:
+        authorized = True
+
+    if (request.method == "POST"):
+        if request.POST.get("update"):
+            if authorized is True:
+                for key, value in request.POST.items():
+                    print(key + ' ' + value)
+                    if key == 'name':
+                        setattr(team, key, value)
+                        team.save()
+
+                for user in users:
+                    if request.POST.get("c" + str(user.id)) == "clicked":
+                        team.user.add(user)
+                        team.save
+                    else:
+                        if user in team.user.all():
+                            team.user.remove(user)
+                            team.save()
+            else:
+                return redirect('forbidden')
+
+
+
     return render(request, 'teamProfile.html',
-                  {"users": users, "team": team, "references": references, "reference_count": reference_count,
+                  {"users": users, "team_users": team_users, "team": team, "references": references, "reference_count": reference_count,
                    "referenceFilter": referenceFilter})
 
 
@@ -184,6 +220,16 @@ def rankProfilePage(request, pk):
 
     referenceFilter = ReferenceByRankFilter(request.GET, queryset=references)
     references = referenceFilter.qs
+
+    #only staff can change ranks
+    if request.method == "POST":
+        if request.POST.get("update"):
+            if checkIfUserIsAdmin(request.user) is True:
+                for key, value in request.POST.items():
+                    setattr(rank, key, value)
+                    rank.save()
+            else:
+                return redirect('forbidden')
 
     return render(request, 'rankProfile.html',
                   {"rank": rank, "references": references, "reference_count": reference_count,
@@ -211,6 +257,21 @@ def userProfilePage(request, pk):
 
     reference_count = len(references)
 
+
+    authorized = False
+    if request.user == user or checkIfUserIsAdmin(request.user) is True:
+        authorized = True
+
+    if (request.method == "POST"):
+        if authorized is True:
+            if request.POST.get("update"):
+                for key, value in request.POST.items():
+                    setattr(user, key, value)
+                    user.save()
+        else:
+            return redirect('forbidden')
+
+
     return render(request, 'userProfile.html',
                   {"user": user, "teams": teams, "references": references, "reference_count": reference_count,
                    "referenceFilter": referenceFilter})
@@ -219,7 +280,10 @@ def userProfilePage(request, pk):
 @login_required(login_url='login')
 def projectProfilePage(request, pk):
     project = Project.objects.get(id=pk)
-    teams = project.team.all()
+
+    project_teams = project.team.all()
+    teams = Team.objects.all()
+
     references = []
 
     referenceFilter = ReferenceByProjectFilter(request.GET, queryset=Reference.objects.filter(project=project))
@@ -234,15 +298,36 @@ def projectProfilePage(request, pk):
             authorized = True
             break
 
-    return render(request, 'projectProfile.html',
-                  {"project": project, "teams": teams, "references": references, "reference_count": reference_count,
-                   "referenceFilter": referenceFilter, "authorized": authorized})
+    if checkIfUserIsAdmin(request.user):
+        authorized = True
 
+    if (request.method == "POST"):
+        if authorized is True:
+            if request.POST.get("update"):
+                for key, value in request.POST.items():
+                    print(key + ' ' + value)
+                    if key in ['title', 'code']:
+                        setattr(project, key, value)
+                        project.save()
+
+                for team in teams:
+                    if request.POST.get("c" + str(team.id)) == "clicked":
+                        project.team.add(team)
+                        project.save
+                    else:
+                        if team in project.team.all():
+                            project.team.remove(team)
+                            project.save()
+        else:
+            return redirect('forbidden')
+
+    return render(request, 'projectProfile.html',
+                  {"project": project, "teams": teams, "project_teams": project_teams, "references": references, "reference_count": reference_count,
+                   "referenceFilter": referenceFilter, "authorized": authorized})
 
 # endregion Profile pages
 
 # region Registration and authentication
-
 
 @unauthenticated_user
 def registerPage(request):
@@ -256,6 +341,7 @@ def registerPage(request):
 
     context = {'form': form}
     return render(request, 'register.html', context)
+
 
 @unauthenticated_user
 def loginPage(request):
@@ -283,6 +369,7 @@ def logoutUser(request):
 
 def forbidden(request):
     return render(request, 'forbidden.html')
+
 # endregion Registration and authentication
 
 # region References upload
@@ -468,11 +555,11 @@ def referenceCreationPage(request):
                   {"references": references, "referenceFilter": referenceFilter, "reference_count": reference_count})
 
 
-
 def get_fields(e):
     fields = [f for f in e.fields]
     if fields:
         return fields
+
 
 def get_ref_attr_fields(e):
     fields = [f for f in e.fields]
@@ -482,6 +569,7 @@ def get_ref_attr_fields(e):
             if field.name not in ['team','project','rank','title','year','isbn','issn', 'doi','key','type','author','editor']:
                 resulting_fields.append(field)
         return resulting_fields
+
 
 # make new list with trimmed names of authors
 def trim_all_strings(strings):
@@ -591,6 +679,7 @@ def to_key(k):
 # endregion References upload
 
 #region References Update
+
 def update_main_fields(reference, key, value):
     if key in ['title','year','isbn','issn', 'doi','key','type']:
         setattr(reference, key, value)
@@ -607,10 +696,12 @@ def update_main_fields(reference, key, value):
 
     return reference
 
+
 def update_attributes(reference, key, value):
     for attribute in reference.attributes.all():
         if attribute.name == key.rstrip(','):
             attribute.value = value
             attribute.save()
     return reference
+
 #endregion References Update

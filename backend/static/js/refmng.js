@@ -58,23 +58,23 @@ jQuery(function ($) {
     );
 
     //reference edit toggle
-    $(document).on('click', '#update-reference', function (e) {
-        $('#update-reference-row').css('display', 'flex');
-        $('#update-reference-row-label').css('display', 'flex');
-        $('#hide-update-reference').css('display', 'flex');
+    $(document).on('click', '#update', function (e) {
+        $('#update-row').css('display', 'flex');
+        $('#update-row-label').css('display', 'flex');
+        $('#hide-update').css('display', 'flex');
 
         $('html, body').animate({
-            scrollTop: $("#update-reference-row").offset().top
+            scrollTop: $("#update-row").offset().top
         }, 2000);
     });
 
-    $(document).on('click', '#hide-update-reference', function (e) {
+    $(document).on('click', '#hide-update', function (e) {
         // $('#update-reference-row').css('display', 'none');
         // $('#update-reference-row-label').css('display', 'none');
         // $('#hide-update-reference').css('display', 'none');
-        $('#update-reference-row').slideUp()
-        $('#update-reference-row-label').slideUp()
-        $('#hide-update-reference').slideUp()
+        $('#update-row').slideUp()
+        $('#update-row-label').slideUp()
+        $('#hide-update').slideUp()
     });
 
 

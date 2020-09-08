@@ -10,7 +10,7 @@
                 <h5>{{project.code}}</h5>
                 <hr>
                 {%if authorized is True or request.user.is_staff %}
-                <a class="btn btn-outline-info  btn-sm btn-block" href="">Update Project</a>
+                <button class="btn btn-outline-info  btn-sm btn-block" id="update">Update Project</button>
                 <a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'delete_project' project.id %}">Delete
                     Project</a>
                 {% endif %}
@@ -21,7 +21,7 @@
             <div class="card card-body">
                 <h5>Teams</h5>
                 <hr>
-                {% for team in teams %}
+                {% for team in project_teams %}
                 <p><a href=" {% url 'team' team.id %}">{{team.name}}</a></p>
                 {%endfor%}
             </div>
@@ -78,7 +78,94 @@
                 </form>
             </div>
         </div>
+
         {% include 'referencesList.html' %}
+
     </div>
+
+
+    <div class="row" id="update-row-label" style="display: none">
+        <div class="col-12">
+            <div class="card card-body">
+                <h4> Edit project</h4>
+            </div>
+        </div>
+    </div>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <div class="row" id="update-row" style="display: none">
+
+            <div class="col-12">
+                <div class="card card-body">
+
+                    {% if project.code %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Code:</label>
+                        </div>
+                        <div class="col-9">
+                            <input type="text" , class="form-control" , name="code" , value="{{project.code}}"
+                                   required>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if project.title %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Title:</label>
+                        </div>
+                        <div class="col-9">
+                            <input type="text" , class="form-control" , name="title" , value="{{project.title}}"
+                                   required>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Add and/or remove team(s) to project: </label>
+                        <div class="col-sm-9">
+                            <div class="style-5" style="overflow-y: scroll; height:400px;">
+                                {% for team in teams %}
+
+                                {% if team in project_teams %}
+                                <li class="check-li"><input type="checkbox" , value="clicked" , name="c{{team.id}}"
+                                                            checked>
+                                    {{team.name}}
+                                </li>
+                                {% else %}
+                                <li class="check-li"><input type="checkbox" , value="clicked" , name="c{{team.id}}">
+                                    {{team.name}}
+                                </li>
+                                {% endif %}
+
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row" id="hide-update" style="display: none">
+            <div class="col-12">
+                <div class="card card-body">
+                    <button id="submit-update-reference-btn" class="btn btn-outline-success  btn-sm btn-block"
+                            type="submit"
+                            name="update" value="update">SUBMIT
+                    </button>
+                    <button id="hide-edit-reference" class="btn btn-outline-info  btn-sm btn-block">HIDE EDITING
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
 </div>
 {% endblock %}

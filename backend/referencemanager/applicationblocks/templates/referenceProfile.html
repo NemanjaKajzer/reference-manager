@@ -9,7 +9,7 @@
                 <hr>
                 <a class="btn btn-outline-success  btn-sm btn-block" href="">Download Reference</a>
                 {%if request.user in reference.author.all or request.user.is_staff %}
-                <button id="update-reference" class="btn btn-outline-info  btn-sm btn-block">Update Reference</button>
+                <button id="update" class="btn btn-outline-info  btn-sm btn-block">Update Reference</button>
                 <a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'delete_reference' reference.id %}">Delete
                     Reference</a>
                 {% endif %}
@@ -127,7 +127,7 @@
 
     </div>
 
-    <div class="row" id="update-reference-row-label" style="display: none">
+    <div class="row" id="update-row-label" style="display: none">
         <div class="col-12">
             <div class="card card-body">
                 <h4> Edit reference</h4>
@@ -140,7 +140,7 @@
 
         {% csrf_token %}
 
-        <div class="row" id="update-reference-row" style="display: none">
+        <div class="row" id="update-row" style="display: none">
             <div class="col-6">
                 <div class="card card-body">
 
@@ -242,17 +242,7 @@
                         </div>
                     </div>
                     {% endif %}
-                    {% if reference.publisher %}
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label class="form-label">Publisher:</label>
-                        </div>
-                        <div class="col-9">
-                            <input type="text" , class="form-control" , name="publisher" , value={{reference.publisher}}
-                                   required>
-                        </div>
-                    </div>
-                    {% endif %}
+
                     {% if reference.isbn %}
                     <div class="form-group row">
                         <div class="col-3">
@@ -263,6 +253,7 @@
                         </div>
                     </div>
                     {% endif %}
+
                     {% if reference.issn %}
                     <div class="form-group row">
                         <div class="col-3">
@@ -273,6 +264,7 @@
                         </div>
                     </div>
                     {% endif %}
+
                     {% if reference.doi %}
                     <div class="form-group row">
                         <div class="col-3">
@@ -306,7 +298,7 @@
             </div>
         </div>
 
-        <div class="row" id="hide-update-reference" style="display: none">
+        <div class="row" id="hide-update" style="display: none">
             <div class="col-12">
                 <div class="card card-body">
                     <button id="submit-update-reference-btn" class="btn btn-outline-success  btn-sm btn-block"

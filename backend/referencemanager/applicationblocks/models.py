@@ -26,7 +26,7 @@ class Team(models.Model):
 class Project(models.Model):
     team = models.ManyToManyField(Team)
     code = models.CharField(unique=True, max_length=90)
-    title = models.CharField(max_length=50, default='')
+    title = models.CharField(max_length=350, default='')
 
     def __str__(self):
         title_to_show = ''
