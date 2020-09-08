@@ -46,7 +46,7 @@ class ReferenceAttribute(models.Model):
     value = models.CharField(max_length=800, default='value')
 
 class Reference(models.Model):
-    title = models.CharField(max_length=180, default='title')
+    title = models.CharField(max_length=180, default='')
     author = models.ManyToManyField(User, related_name='user_id', related_query_name='user_id')
     team = models.ForeignKey(Team, null=True, related_name='team_id', related_query_name='team_id',
                              on_delete=models.SET_NULL, default=None)
@@ -54,13 +54,13 @@ class Reference(models.Model):
                                 on_delete=models.SET_NULL, default=None)
     rank = models.ForeignKey(Rank, null=True, related_name='rank_id', related_query_name='rank_id',
                              on_delete=models.SET_NULL, default=None)
-    year = models.IntegerField(default=2020)
-    isbn = models.CharField(max_length=90, default='isbn')
-    issn = models.CharField(max_length=90, default='issn')
-    doi = models.CharField(max_length=90, default='doi')
+    year = models.IntegerField(default=0)
+    isbn = models.CharField(max_length=90, default='')
+    issn = models.CharField(max_length=90, default='')
+    doi = models.CharField(max_length=90, default='')
     editor = models.ManyToManyField(User, related_name='editor_id', related_query_name='editor_id', default=None)
-    key = models.CharField(max_length=20, default='key')
-    type = models.CharField(max_length=30, default='type')
+    key = models.CharField(max_length=20, default='')
+    type = models.CharField(max_length=30, default='')
     attributes = models.ManyToManyField(ReferenceAttribute, related_name='editor_id', related_query_name='editor_id', default=None)
 
     def __str__(self):

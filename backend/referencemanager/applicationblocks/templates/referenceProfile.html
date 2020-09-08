@@ -7,7 +7,6 @@
             <div class="card card-body">
                 <h3>{{reference.title}}</h3>
                 <hr>
-                <a class="btn btn-outline-success  btn-sm btn-block" href="">Download Reference</a>
                 {%if request.user in reference.author.all or request.user.is_staff %}
                 <button id="update" class="btn btn-outline-info  btn-sm btn-block">Update Reference</button>
                 <a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'delete_reference' reference.id %}">Delete
@@ -144,6 +143,17 @@
             <div class="col-6">
                 <div class="card card-body">
 
+                    {% if reference.title %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Title:</label>
+                        </div>
+                        <div class="col-9">
+                            <input type="text" , class="form-control" , name="title" , value="{{reference.title}}" required>
+                        </div>
+                    </div>
+                    {% endif %}
+
                     {% if reference.team %}
                     <div class="form-group row">
                         <div class="col-3">
@@ -249,7 +259,7 @@
                             <label class="form-label">ISBN:</label>
                         </div>
                         <div class="col-9">
-                            <input type="text" , class="form-control" , name="isbn" , value={{reference.isbn}} required>
+                            <input type="text" , class="form-control" , name="isbn" , value="{{reference.isbn}}" required>
                         </div>
                     </div>
                     {% endif %}
@@ -260,7 +270,7 @@
                             <label class="form-label">ISSN:</label>
                         </div>
                         <div class="col-9">
-                            <input type="text" , class="form-control" , name="issn" , value={{reference.issn}} required>
+                            <input type="text" , class="form-control" , name="issn" , value="{{reference.issn}}" required>
                         </div>
                     </div>
                     {% endif %}
@@ -271,11 +281,44 @@
                             <label class="form-label">DOI:</label>
                         </div>
                         <div class="col-9">
-                            <input type="text" , class="form-control" , name="doi" , value={{reference.doi}} required>
+                            <input type="text" , class="form-control" , name="doi" , value="{{reference.doi}}" required>
                         </div>
                     </div>
                     {% endif %}
 
+                    {% if reference.year %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Year:</label>
+                        </div>
+                        <div class="col-9">
+                            <input type="number" , class="form-control" , name="year" , value="{{reference.year}}" required>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                     <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Add and/or remove editor(s): </label>
+                        <div class="col-sm-9">
+                            <div class="style-5" style="overflow-y: scroll; height:400px;">
+                                {% for user in users %}
+                                {% if user.first_name != "" and user.last_name != "" %}
+
+                                {% if user in reference_editors %}
+                                <li class="check-li"><input type="checkbox" , value="clicked" , name="c{{user.id}}" checked>
+                                    {{user.first_name}} {{user.last_name}}
+                                </li>
+                                {% else %}
+                                <li class="check-li"><input type="checkbox" , value="clicked" , name="c{{user.id}}">
+                                    {{user.first_name}} {{user.last_name}}
+                                </li>
+                                {% endif %}
+
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -290,7 +333,7 @@
 
                         <div class="col-sm-9" style="margin-bottom: 10px;">
                             <input type="text" , class="form-control" , name={{attribute.name}},
-                                   value={{attribute.value}} required>
+                                   value="{{attribute.value}}" required>
                         </div>
                     </div>
                     {% endfor %}

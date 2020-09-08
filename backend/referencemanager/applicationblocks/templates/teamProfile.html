@@ -38,48 +38,62 @@
     <br>
 
     <div class="row">
-        <div class="col-3">
+        <div class="col-md">
             <div class="card card-body">
-                <form method="get">
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label class="form-label">Title:</label>
-                        </div>
-                        <div class="col-9">
-                            {{referenceFilter.form.title}}
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label class="form-label">Project:</label>
-                        </div>
-                        <div class="col-9">
-                            {{referenceFilter.form.project}}
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label class="form-label">From year:</label>
-                        </div>
-                        <div class="col-9">
-                            {{referenceFilter.form.startYear}}
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label class="form-label">To year:</label>
-                        </div>
-                        <div class="col-9">
-                            {{referenceFilter.form.endYear}}
-                        </div>
-                    </div>
-                    <button class="btn btn-outline-info  btn-sm btn-block" type="submit">Search</button>
+                <h5>Preview and/or search references</h5>
+                <hr>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-success  btn-sm btn-block" type="submit" name="export"
+                            value="export">Export References
+                    </button>
                 </form>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="card card-body">
+                            <form method="get">
+                                <div class="form-group row">
+                                    <div class="col-3">
+                                        <label class="form-label">Title:</label>
+                                    </div>
+                                    <div class="col-9">
+                                        {{referenceFilter.form.title}}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-3">
+                                        <label class="form-label">Project:</label>
+                                    </div>
+                                    <div class="col-9">
+                                        {{referenceFilter.form.project}}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-3">
+                                        <label class="form-label">From year:</label>
+                                    </div>
+                                    <div class="col-9">
+                                        {{referenceFilter.form.startYear}}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-3">
+                                        <label class="form-label">To year:</label>
+                                    </div>
+                                    <div class="col-9">
+                                        {{referenceFilter.form.endYear}}
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline-info  btn-sm btn-block" type="submit">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% include 'referencesList.html' %}
+                </div>
             </div>
         </div>
-        {% include 'referencesList.html' %}
     </div>
-
     <div class="row" id="update-row-label" style="display: none">
         <div class="col-12">
             <div class="card card-body">
@@ -119,7 +133,8 @@
                                 {% if user.first_name != "" and user.last_name != "" %}
 
                                 {% if user in team_users %}
-                                <li class="check-li"><input type="checkbox" , value="clicked" , name="c{{user.id}}" checked>
+                                <li class="check-li"><input type="checkbox" , value="clicked" , name="c{{user.id}}"
+                                                            checked>
                                     {{user.first_name}} {{user.last_name}}
                                 </li>
                                 {% else %}

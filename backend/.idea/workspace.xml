@@ -25,10 +25,10 @@
       <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/projectProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/projectProfile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/rankProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/rankProfile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/referenceProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/referenceProfile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/references.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/references.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teamProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/teamProfile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/userProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/userProfile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/refmng.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/refmng.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,10 +180,10 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Django Server.backend" />
-      <item itemvalue="Django Server.refmngserver" />
       <item itemvalue="JavaScript Debug.127.0.0.1:8000" />
       <item itemvalue="Python.refmng" />
+      <item itemvalue="Django Server.backend" />
+      <item itemvalue="Django Server.refmngserver" />
     </list>
     <recent_temporary>
       <list>
@@ -220,7 +220,7 @@
       <workItem from="1599562138397" duration="782000" />
       <workItem from="1599562950956" duration="202000" />
       <workItem from="1599563177648" duration="133000" />
-      <workItem from="1599563331098" duration="5784000" />
+      <workItem from="1599563331098" duration="14121000" />
     </task>
     <servers />
   </component>
@@ -244,10 +244,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="586" y="198" key="#Inspections/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598642970812" />
-    <state x="698" y="343" key="#Notifications" timestamp="1598695766762">
+    <state x="698" y="343" key="#Notifications" timestamp="1599570743850">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="698" y="343" key="#Notifications/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598695766762" />
+    <state x="698" y="343" key="#Notifications/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1599570743850" />
     <state x="414" y="129" width="1092" height="911" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598695922492">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -324,14 +324,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="512" y="248" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598898167449" />
-    <state x="1956" y="-27" width="1573" height="739" maximized="true" key="dock-window-1" timestamp="1599216034513">
+    <state x="1937" y="-14" width="1580" height="771" maximized="true" key="dock-window-1" timestamp="1599576443121">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="1956" y="-27" width="1573" height="739" maximized="true" key="dock-window-1/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1599216034513" />
-    <state x="2237" y="-12" width="1618" height="699" maximized="true" key="dock-window-2" timestamp="1598979830880">
+    <state x="1937" y="-14" width="1580" height="771" maximized="true" key="dock-window-1/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1599576443121" />
+    <state x="1940" y="-13" width="1580" height="705" maximized="true" key="dock-window-2" timestamp="1599577216236">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2237" y="-12" width="1618" height="699" maximized="true" key="dock-window-2/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598979830880" />
+    <state x="1940" y="-13" width="1580" height="705" maximized="true" key="dock-window-2/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1599577216236" />
     <state x="1946" y="-10" width="1618" height="699" maximized="true" key="dock-window-3" timestamp="1598980423685">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>

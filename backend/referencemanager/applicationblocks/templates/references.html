@@ -58,6 +58,12 @@
             <div class="card card-body">
                 <h5>Preview and/or search references</h5>
                 <hr>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-success  btn-sm btn-block" type="submit" name="export" value="export">Export References</button>
+                </form>
+
                 <div class="row">
                     <div class="col-3">
                         <div class="card card-body">
