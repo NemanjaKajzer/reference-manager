@@ -19,12 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97378626-47cf-4b14-a3e3-1aa643fca02d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/filters.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/filters.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/navbar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="97378626-47cf-4b14-a3e3-1aa643fca02d" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -175,10 +170,10 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Django Server.backend" />
-      <item itemvalue="Django Server.refmngserver" />
       <item itemvalue="JavaScript Debug.127.0.0.1:8000" />
       <item itemvalue="Python.refmng" />
+      <item itemvalue="Django Server.backend" />
+      <item itemvalue="Django Server.refmngserver" />
     </list>
     <recent_temporary>
       <list>
@@ -216,7 +211,7 @@
       <workItem from="1599562950956" duration="202000" />
       <workItem from="1599563177648" duration="133000" />
       <workItem from="1599563331098" duration="14274000" />
-      <workItem from="1599738227993" duration="1540000" />
+      <workItem from="1599738227993" duration="2143000" />
     </task>
     <servers />
   </component>
