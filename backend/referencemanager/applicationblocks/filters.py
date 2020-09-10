@@ -73,7 +73,7 @@ class ReferenceByTeamFilter(django_filters.FilterSet):
 
 class ReferenceByProjectFilter(django_filters.FilterSet):
     title = CharFilter(field_name='title', lookup_expr='icontains', label='Title: ')
-    user = ModelChoiceFilter(field_name='user', queryset=User.objects.all(), label='User: ')
+    user = ModelChoiceFilter(field_name='author', queryset=User.objects.all(), label='User: ')
     startYear = NumberFilter(field_name='year', lookup_expr='gte', label='From year: ')
     endYear = NumberFilter(field_name='year', lookup_expr='lte', label='To year: ')
     class Meta:
@@ -83,7 +83,7 @@ class ReferenceByProjectFilter(django_filters.FilterSet):
 class ReferenceByRankFilter(django_filters.FilterSet):
     title = CharFilter(field_name='title', lookup_expr='icontains', label='Title: ')
     project = ModelChoiceFilter(field_name='project', queryset=Project.objects.all(), label='Project: ')
-    user = ModelChoiceFilter(field_name='user', queryset=User.objects.all(), label='User: ')
+    user = ModelChoiceFilter(field_name='author', queryset=User.objects.all(), label='User: ')
     team = ModelChoiceFilter(field_name='team', queryset=Team.objects.all(), label='Team: ')
     startYear = NumberFilter(field_name='year', lookup_expr='gte', label='From year: ')
     endYear = NumberFilter(field_name='year', lookup_expr='lte', label='To year: ')

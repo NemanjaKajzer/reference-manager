@@ -17,6 +17,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
+            {% if request.user.is_authenticated %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'user' request.user.id%}">My profile</a>
             </li>
@@ -32,6 +33,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'ranks' %}">Ranks</a>
             </li>
+            {% endif %}
         </ul>
     </div>
 
@@ -39,8 +41,14 @@
     <span class="hello-msg">Hello, {{request.user}}</span>
     <span><a class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
     {% else %}
-    <span><a class="hello-msg" href="{% url 'login' %}">Login</a></span>
-    <span><a class="hello-msg" href="{% url 'register' %}">Register</a></span>
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+        </li>
+    </ul>
     {% endif %}
 
 
