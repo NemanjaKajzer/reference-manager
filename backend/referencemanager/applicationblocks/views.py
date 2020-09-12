@@ -423,7 +423,7 @@ def referenceCreationPage(request):
                 #region Uploaded File Processing
                 uploaded_file = request.FILES['document']
 
-                path = default_storage.save('tmp/references.bib', ContentFile(uploaded_file.read()))
+                path = default_storage.save(r'tmp\references.bib', ContentFile(uploaded_file.read()))
                 path_to_file = default_storage.open(r'tmp\references.bib').name
 
                 bibfile = metamodel_for_language('bibtex').model_from_file(path_to_file)
@@ -749,21 +749,14 @@ def get_project_object(project_code):
 
 
 def check_if_duplicate(isbn, issn, doi, authors, title):
-    # check if reference with the same isbn, issn or doi already exists
-    pp = pprint.PrettyPrinter(indent=4)
     for db_reference in Reference.objects.all():
-        # pp.pprint(isbn.lower().lstrip().rstrip() + ' ' + db_reference.isbn.lower().lstrip().rstrip())
-        # pp.pprint(doi.lower().lstrip().rstrip() + ' ' + db_reference.doi.lower().lstrip().rstrip())
-        # pp.pprint(issn.lower().lstrip().rstrip() + ' ' + db_reference.issn.lower().lstrip().rstrip())
-        if isbn.lower().lstrip().rstrip() == db_reference.isbn.lower().lstrip().rstrip():
-            if (isbn != ''):
-                return True
-        if issn.lower().lstrip().rstrip() == db_reference.issn.lower().lstrip().rstrip():
-            if (issn != ''):
-                return True
-        if doi.lower().lstrip().rstrip() == db_reference.doi.lower().lstrip().rstrip():
-            if (doi != ''):
-                return True
+        # check if reference with the same isbn, issn or doi already exists
+        if isbn.lower().lstrip().rstrip() == db_reference.isbn.lower().lstrip().rstrip() and isbn != '':
+            return True
+        if issn.lower().lstrip().rstrip() == db_reference.issn.lower().lstrip().rstrip() and issn != '':
+            return True
+        if doi.lower().lstrip().rstrip() == db_reference.doi.lower().lstrip().rstrip() and doi != '':
+            return True
 
         # check if reference with the same authors and title exists
         if list(authors) == list(db_reference.author.all()) and title.lower() == db_reference.title.lower():
