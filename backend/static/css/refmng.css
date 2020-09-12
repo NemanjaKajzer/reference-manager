@@ -155,3 +155,8 @@ li {
 body {
     margin-top: 80px !important;
 }
+
+.filter-field {
+    width: 100% !important;
+    height: 33px !important;
+}
