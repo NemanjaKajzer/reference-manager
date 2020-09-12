@@ -10,11 +10,6 @@ def get_name(self):
 User.add_to_class("__str__", get_name)
 
 
-class Editor(models.Model):
-    first_name = models.CharField(max_length=90, default='')
-    last_name = models.CharField(max_length=90, default='')
-
-
 class Team(models.Model):
     name = models.CharField(unique=True, max_length=50, default='')
     user = models.ManyToManyField(User)

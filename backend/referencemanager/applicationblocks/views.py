@@ -811,7 +811,7 @@ def to_key(k):
 #region References Update
 
 def update_main_fields(reference, key, value):
-    if key in ['title','year','isbn','issn', 'doi','key','type']:
+    if key in ['title','year', 'key','type']:
         setattr(reference, key, value)
         reference.save()
     elif key == 'team':
