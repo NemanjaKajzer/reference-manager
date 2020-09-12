@@ -161,9 +161,9 @@ def referenceProfilePage(request, pk):
                 for key, value in request.POST.items():
                     print(key + ' ' + value)
                     if key not in ['team','project','rank','title','year','isbn','issn', 'doi','key','type','author','editor']:
-                        reference = update_attributes(reference, key, value)
+                        reference = updateAttributes(reference, key, value)
                     else:
-                        reference = update_main_fields(reference, key, value)
+                        reference = updateMainFields(reference, key, value)
 
                 #handle editors update
                 for user in users:
@@ -439,16 +439,16 @@ def referenceCreationPage(request):
                         #endregion Reference Key And Type
 
                         # region Field Assigning
-                        author_field = get_field(e, 'author')
-                        title_field = get_field(e, 'title')
-                        doi_field = get_field(e, 'doi')
-                        year_field = get_field(e, 'year')
-                        rank_field = get_field(e, 'rank')
-                        project_field = get_field(e, 'project')
+                        author_field = getField(e, 'author')
+                        title_field = getField(e, 'title')
+                        doi_field = getField(e, 'doi')
+                        year_field = getField(e, 'year')
+                        rank_field = getField(e, 'rank')
+                        project_field = getField(e, 'project')
 
-                        editor_field = get_field(e, 'editor')
-                        isbn_field = get_field(e, 'isbn')
-                        issn_field = get_field(e, 'issn')
+                        editor_field = getField(e, 'editor')
+                        isbn_field = getField(e, 'isbn')
+                        issn_field = getField(e, 'issn')
                         # endregion Field Assigning
 
                         # region Value Assigning
@@ -492,16 +492,16 @@ def referenceCreationPage(request):
 
                         # region Authors Processing
                         # gets list of authors (strings)
-                        authors = get_users(author_field)
+                        authors = getUsers(author_field)
                         # trims all strings in a list and writes them to a new list (can't change strings)
-                        resulting_authors = trim_all_strings(authors)
+                        resulting_authors = trimAllStrings(authors)
                         # finds user objects that have the same combination of first name and last name
-                        authors_objects = get_user_objects(resulting_authors)
+                        authors_objects = getUserObjects(resulting_authors)
                         # endregion Authors Processing
 
                         # region Duplicate Checking
                         # if reference entry is a duplicate, then move on to the next entry
-                        if check_if_duplicate(isbn_value, issn_value, doi_value, authors_objects, title_value) is True:
+                        if checkIfDuplicate(isbn_value, issn_value, doi_value, authors_objects, title_value) is True:
                             unsuccessful = unsuccessful + 1
                             continue
                         # endregion Duplicate Checking
@@ -509,26 +509,26 @@ def referenceCreationPage(request):
                         # region Editors Processing
                         # gets list of editors (strings)
                         try:
-                            editors = get_users(editor_field)
+                            editors = getUsers(editor_field)
                         except:
                             editors = ''
 
                         # trims all strings in a list and writes them to a new list (can't change strings)
-                        resulting_editors = trim_all_strings(editors)
+                        resulting_editors = trimAllStrings(editors)
                         # finds user objects that have the same combination of first name and last name
-                        editors_objects = get_user_objects(resulting_editors)
+                        editors_objects =getUserObjects(resulting_editors)
                         # endregion Editors Processing
 
                         # region Rank Processing
-                        rank = get_rank_object(rank_value)
+                        rank = getRankObject(rank_value)
                         # endregion Rank Processing
 
                         # region Team Processing
-                        team = get_team_object(authors_objects)
+                        team = getTeamObject(authors_objects)
                         # endregion Team Processing
 
                         # region Project Processing
-                        project = get_project_object(project_value)
+                        project = getProjectObject(project_value)
                         # endregion Project Processing
 
                         # region Reference Saving
@@ -545,7 +545,7 @@ def referenceCreationPage(request):
                             reference.editor.add(editor_object)
 
                         #saving the rest of the attributes
-                        fields = get_ref_attr_fields(e)
+                        fields = getRefAttrFields(e)
                         if fields:
                             for field in fields:
                                 reference_attribute = ReferenceAttribute.objects.create(name=field.name, value=field.value)
@@ -685,13 +685,13 @@ def writeAttributes(attributes):
     return result
 
 
-def get_fields(e):
+def getFields(e):
     fields = [f for f in e.fields]
     if fields:
         return fields
 
 
-def get_ref_attr_fields(e):
+def getRefAttrFields(e):
     fields = [f for f in e.fields]
     resulting_fields = []
     if fields:
@@ -702,7 +702,7 @@ def get_ref_attr_fields(e):
 
 
 # make new list with trimmed names of authors
-def trim_all_strings(strings):
+def trimAllStrings(strings):
     resulting_authors = []
     for author in strings:
         author_without_space = author.lstrip().rstrip()
@@ -712,7 +712,7 @@ def trim_all_strings(strings):
 
 
 # get list of user objects from names in bib file
-def get_user_objects(names):
+def getUserObjects(names):
     authors_objects = []
     for res_author in names:
         for db_author in User.objects.all():
@@ -723,7 +723,7 @@ def get_user_objects(names):
 
 
 # get rank object from code in bib file
-def get_rank_object(rank_name):
+def getRankObject(rank_name):
     for db_rank in Rank.objects.all():
         if rank_name.lower() == db_rank.code.lower():
             return db_rank
@@ -732,7 +732,7 @@ def get_rank_object(rank_name):
 
 
 # get team object from authors in bib file
-def get_team_object(authors_objects):
+def getTeamObject(authors_objects):
     for db_team in Team.objects.all():
         if set(authors_objects) == set(db_team.user.all()):
             return db_team
@@ -740,7 +740,7 @@ def get_team_object(authors_objects):
 
 
 # get project object from code in bib file
-def get_project_object(project_code):
+def getProjectObject(project_code):
     for db_project in Project.objects.all():
         if project_code == db_project.code:
             return db_project
@@ -748,7 +748,7 @@ def get_project_object(project_code):
     return None
 
 
-def check_if_duplicate(isbn, issn, doi, authors, title):
+def checkIfDuplicate(isbn, issn, doi, authors, title):
     for db_reference in Reference.objects.all():
         # check if reference with the same isbn, issn or doi already exists
         if isbn.lower().lstrip().rstrip() == db_reference.isbn.lower().lstrip().rstrip() and isbn != '':
@@ -765,23 +765,23 @@ def check_if_duplicate(isbn, issn, doi, authors, title):
     return False
 
 
-def get_field(e, name):
+def getField(e, name):
     fields = [f for f in e.fields if f.name == name]
     if fields:
         return fields[0]
 
 
-def get_author(f):
+def getAuthor(f):
     astr = f.value
     if ' and ' in astr:
         astr = astr.split(' and ')[0]
     if ',' in astr:
         astr = astr.split(',')[0]
         astr = astr.replace(' ', '')
-    return to_key(astr.split()[0])
+    return toKey(astr.split()[0])
 
 
-def get_users(f):
+def getUsers(f):
     result = []
     astr = f.value
     if 'and ' in astr:
@@ -793,7 +793,7 @@ def get_users(f):
     return result
 
 
-def to_key(k):
+def toKey(k):
     nonkeychars = re.compile('[^a-zA-Z0-9]')
     k = unidecode.unidecode(k.strip().lower())
     k = nonkeychars.sub('', k)
@@ -803,7 +803,7 @@ def to_key(k):
 
 #region References Update
 
-def update_main_fields(reference, key, value):
+def updateMainFields(reference, key, value):
     if key in ['title','year', 'key','type']:
         setattr(reference, key, value)
         reference.save()
@@ -820,7 +820,7 @@ def update_main_fields(reference, key, value):
     return reference
 
 
-def update_attributes(reference, key, value):
+def updateAttributes(reference, key, value):
     for attribute in reference.attributes.all():
         if attribute.name == key.rstrip(','):
             attribute.value = value

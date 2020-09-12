@@ -21,6 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="97378626-47cf-4b14-a3e3-1aa643fca02d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/referenceProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/templates/referenceProfile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/referencemanager/applicationblocks/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -222,7 +223,7 @@
       <workItem from="1599851537055" duration="422000" />
       <workItem from="1599852395509" duration="369000" />
       <workItem from="1599852954993" duration="964000" />
-      <workItem from="1599906278445" duration="810000" />
+      <workItem from="1599906278445" duration="2539000" />
     </task>
     <servers />
   </component>

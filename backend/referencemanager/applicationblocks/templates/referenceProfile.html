@@ -16,15 +16,17 @@
             </div>
         </div>
 
+        {% if reference.team %}
         <div class="col-md">
             <div class="card card-body">
-                <h5>Team {{reference.team.name}}:</h5>
+                <h5>Team {{reference.team.name}}</h5>
                 <hr>
                 {%for user in reference.team.user.all %}
                 <p><a href="{% url 'user' user.id %}">{{user.first_name}} {{user.last_name}}</a></p>
                 {%endfor%}
             </div>
         </div>
+        {% endif %}
 
         {% if reference.project %}
         <div class="col-md">
@@ -35,6 +37,19 @@
             </div>
         </div>
         {% endif %}
+
+        {% if reference.editor.all|length > 0 %}
+         <div class="col-md">
+            <div class="card card-body">
+                <h5>Editors</h5>
+                <hr>
+                {%for user in reference.editor.all %}
+                <p><a href="{% url 'user' user.id %}">{{user.first_name}} {{user.last_name}}</a></p>
+                {%endfor%}
+            </div>
+        </div>
+        {% endif %}
+
     </div>
 
     <br>
