@@ -1,7 +1,4 @@
 from rest_framework import viewsets
-from referencemanager.applicationblocks.serializers import UserSerializer, ReferenceSerializer
-from .models import Reference
-
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
@@ -9,14 +6,8 @@ from rest_framework.decorators import api_view, permission_classes
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_exempt
 
-from django.shortcuts import render, redirect
-
-from textx import metamodel_for_language
-from txbibtex import bibfile_str
-
-import unidecode
-import re
-import pprint
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -24,21 +15,30 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
+from django.conf import settings
+
+from django.shortcuts import render, redirect
+
+from textx import metamodel_for_language
+from txbibtex import bibfile_str
+
+from .decorators import *
+
+from time import gmtime, strftime
+from pathlib import Path
+
+import unidecode
+import re
+import pprint
+import os
+import time
+import datetime
+
 from .models import Team, Rank, Reference, Project
 from .forms import CreateUserForm
 from .filters import TeamFilter, ProjectFilter, ReferenceByProjectFilter, ReferenceByRankFilter, ReferenceByTeamFilter, \
     ReferenceByUserFilter, ReferenceFilter, RankFilter
-from temp import tempfile
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
-from django.conf import settings
-import os
-import time
-from .decorators import *
 
-import datetime
-from time import gmtime, strftime
-from pathlib import Path
 
 # region Deletion
 
