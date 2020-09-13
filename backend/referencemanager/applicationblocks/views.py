@@ -720,13 +720,13 @@ def trimAllStrings(strings):
 
 # get list of user objects from names in bib file
 def getUserObjects(names):
-    authors_objects = []
-    for res_author in names:
-        for db_author in User.objects.all():
-            if res_author.lower() == (db_author.first_name + ' ' + db_author.last_name).lower():
-                authors_objects.append(db_author)
+    users_objects = []
+    for res_user in names:
+        for db_user in User.objects.all():
+            if res_user.lower() == (db_user.first_name + ' ' + db_user.last_name).lower():
+                users_objects.append(db_user)
 
-    return authors_objects
+    return users_objects
 
 
 # get rank object from code in bib file
