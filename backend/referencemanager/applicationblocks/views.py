@@ -38,7 +38,7 @@ from .decorators import *
 
 import datetime
 from time import gmtime, strftime
-
+from pathlib import Path
 
 # region Deletion
 
@@ -396,7 +396,107 @@ def forbidden(request):
 
 # endregion Registration and authentication
 
-# region References upload
+#region References Export
+
+def writeReferencesToFile(references):
+    result = ''
+    if references:
+        for reference in references:
+            result += writeReferenceInBibTex(reference)
+            result += '\n'
+
+    downloads_path = str(Path.home() / "Downloads")
+    title = downloads_path + '\export' + str(strftime("%Y%m%d-%H%M%S", gmtime())) + '.bib'
+    print(title)
+    f = open(title, "w", encoding="utf-8")
+    f.write(result)
+    f.close()
+
+    return result
+
+
+def writeReferenceInBibTex(reference):
+    result = ''
+
+    result += ("@" + reference.type)
+    result += "{"
+    result += (reference.key + ",\n\t")
+
+    if reference.author:
+        if len(reference.author.all()) > 0:
+            result += "author = {"
+            result += writeUsers(reference.author)
+            result += "},\n\t"
+
+    if reference.editor:
+        if len(reference.editor.all()) > 0:
+            result += "editor = {"
+            result += writeUsers(reference.editor)
+            result += "},\n\t"
+
+    if reference.project:
+        result += ("project = {" + reference.project.code + "},\n\t")
+
+    if reference.rank:
+        result += ("rank = {" + reference.rank.code + "},\n\t")
+
+    if reference.year != 0:
+        result += ("year = {" + str(reference.year) + "},\n\t")
+
+    if reference.isbn != "":
+        result += ("isbn = {" + reference.isbn + "},\n\t")
+
+    if reference.issn != "":
+        result += ("issn = {" + reference.issn + "},\n\t")
+
+    if reference.doi != "":
+        result += ("doi = {" + reference.doi + "},\n\t")
+
+    if reference.title != "":
+        result += ("title = {" + reference.title + "},\n\t")
+
+
+    result += writeAttributes(reference.attributes)
+
+
+    result += "}\n"
+
+    return result
+
+
+def writeUsers(users):
+    length = len(users.all())
+    index = 0
+    result = ''
+
+    for user in users.all():
+        result += user.first_name + " " + user.last_name
+        if index != (length-1):
+            result += " and "
+
+        index = index + 1
+
+    return result
+
+
+def writeAttributes(attributes):
+    length = len(attributes.all())
+    index = 0
+    result = ''
+
+    for attribute in attributes.all():
+        if index != (length-1):
+            result += attribute.name + " = {" + attribute.value + "},\n\t"
+        else:
+            result += attribute.name + " = {" + attribute.value + "}\n"
+
+        index = index + 1
+
+    return result
+
+#endregion References Export
+
+# region References Upload
 
 @login_required(login_url='login')
 def referenceCreationPage(request):
@@ -412,12 +512,14 @@ def referenceCreationPage(request):
     unsuccessful = 0
     success_message = ''
     error_message = ''
+    export_message = ''
 
     if request.method == 'POST':
 
         if request.POST.get("export"):
             print('uso export')
             writeReferencesToFile(references)
+            export_message = "References successfully exported to your Downloads folder"
         else:
             try:
                 #region Uploaded File Processing
@@ -587,102 +689,7 @@ def referenceCreationPage(request):
     reference_count = len(references)
     references = references.order_by('year')
     return render(request, 'references.html',
-                  {"references": references, "referenceFilter": referenceFilter, "reference_count": reference_count})
-
-
-def writeReferencesToFile(references):
-    result = ''
-    if references:
-        for reference in references:
-            result += writeReferenceInBibTex(reference)
-            result += '\n'
-
-    title = 'export' + str(strftime("%Y%m%d-%H%M%S", gmtime())) + '.bib'
-    f = open(title, "w", encoding="utf-8")
-    f.write(result)
-    f.close()
-
-    return result
-
-
-def writeReferenceInBibTex(reference):
-    result = ''
-
-    result += ("@" + reference.type)
-    result += "{"
-    result += (reference.key + ",\n\t")
-
-    if reference.author:
-        if len(reference.author.all()) > 0:
-            result += "author = {"
-            result += writeUsers(reference.author)
-            result += "},\n\t"
-
-    if reference.editor:
-        if len(reference.editor.all()) > 0:
-            result += "editor = {"
-            result += writeUsers(reference.editor)
-            result += "},\n\t"
-
-    if reference.project:
-        result += ("project = {" + reference.project.code + "},\n\t")
-
-    if reference.rank:
-        result += ("rank = {" + reference.rank.code + "},\n\t")
-
-    if reference.year != 0:
-        result += ("year = {" + str(reference.year) + "},\n\t")
-
-    if reference.isbn != "":
-        result += ("isbn = {" + reference.isbn + "},\n\t")
-
-    if reference.issn != "":
-        result += ("issn = {" + reference.issn + "},\n\t")
-
-    if reference.doi != "":
-        result += ("doi = {" + reference.doi + "},\n\t")
-
-    if reference.title != "":
-        result += ("title = {" + reference.title + "},\n\t")
-
-
-    result += writeAttributes(reference.attributes)
-
-
-    result += "}\n"
-
-    return result
-
-
-def writeUsers(users):
-    length = len(users.all())
-    index = 0
-    result = ''
-
-    for user in users.all():
-        result += user.first_name + " " + user.last_name
-        if index != (length-1):
-            result += " and "
-
-        index = index + 1
-
-    return result
-
-
-def writeAttributes(attributes):
-    length = len(attributes.all())
-    index = 0
-    result = ''
-
-    for attribute in attributes.all():
-        if index != (length-1):
-            result += attribute.name + " = {" + attribute.value + "},\n\t"
-        else:
-            result += attribute.name + " = {" + attribute.value + "}\n"
-
-        index = index + 1
-
-    return result
+                  {"references": references, "referenceFilter": referenceFilter, "reference_count": reference_count, "export_message": export_message})
 
 
 def getFields(e):
@@ -799,7 +806,7 @@ def toKey(k):
     k = nonkeychars.sub('', k)
     return k
 
-# endregion References upload
+# endregion References Upload
 
 #region References Update
 
