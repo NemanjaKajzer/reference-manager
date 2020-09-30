@@ -38,7 +38,6 @@ jQuery(function ($) {
     var interval = setInterval(function () {
             if ($('.error-div').is(':visible')) {
 
-
                 setTimeout(
                     function () {
                         $('.error-div').slideUp();
@@ -69,13 +68,47 @@ jQuery(function ($) {
     });
 
     $(document).on('click', '#hide-update', function (e) {
-        // $('#update-reference-row').css('display', 'none');
-        // $('#update-reference-row-label').css('display', 'none');
-        // $('#hide-update-reference').css('display', 'none');
         $('#update-row').slideUp()
         $('#update-row-label').slideUp()
         $('#hide-update').slideUp()
     });
+
+     $(document).on('click', '#export-references-btn', function (e) {
+          setTimeout(
+            function () {
+               $('#export-success-div').css('display', 'flex');
+            }, 2000);
+
+           setTimeout(
+            function () {
+                 $('#export-success-div').slideUp()
+            }, 10000);
+
+
+    });
+
+
+
+      var export_interval = setInterval(function () {
+            if ($('.export-success-div').is(':visible')) {
+
+                setTimeout(
+                    function () {
+                        $('.export-success-div').slideUp();
+                    }, 7000);
+
+
+                clearInterval(export_interval);
+            } else {
+                // still hidden
+                if (Date.now() - startTime > maxTime) {
+                    // hidden even after 'maxTime'. stop checking.
+                    clearInterval(export_interval);
+                }
+            }
+        },
+        100 // 0.1 second (wait time between checks)
+    );
 
 
 })

@@ -34,7 +34,7 @@ li {
     font-size: .84rem;
 }
 
-.success-div {
+.success-div, .export-success-div{
     background-color: forestgreen;
     text-align: center;
     border-radius: 8px;
@@ -154,4 +154,13 @@ li {
 
 body {
     margin-top: 80px !important;
+}
+
+.filter-field {
+    width: 100% !important;
+    height: 33px !important;
+}
+
+#export-references-btn {
+    margin-bottom: 10px;
 }

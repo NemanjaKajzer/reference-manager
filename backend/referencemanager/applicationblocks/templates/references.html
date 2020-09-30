@@ -61,7 +61,14 @@
 
                 <form method="post">
                     {% csrf_token %}
-                    <button class="btn btn-outline-success  btn-sm btn-block" type="submit" name="export" value="export">Export References</button>
+                    <button class="btn btn-outline-success  btn-sm btn-block" type="submit" name="export" id="export-references-btn"
+                            value="export">Export References
+                    </button>
+                    {% if export_message %}
+                    <div class="export-success-div">
+                        {{export_message}}
+                    </div>
+                    {% endif %}
                 </form>
 
                 <div class="row">

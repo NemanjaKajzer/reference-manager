@@ -16,15 +16,17 @@
             </div>
         </div>
 
+        {% if reference.team %}
         <div class="col-md">
             <div class="card card-body">
-                <h5>Team {{reference.team.name}}:</h5>
+                <h5>Team {{reference.team.name}}</h5>
                 <hr>
                 {%for user in reference.team.user.all %}
                 <p><a href="{% url 'user' user.id %}">{{user.first_name}} {{user.last_name}}</a></p>
                 {%endfor%}
             </div>
         </div>
+        {% endif %}
 
         {% if reference.project %}
         <div class="col-md">
@@ -35,6 +37,19 @@
             </div>
         </div>
         {% endif %}
+
+        {% if reference.editor.all|length > 0 %}
+         <div class="col-md">
+            <div class="card card-body">
+                <h5>Editors</h5>
+                <hr>
+                {%for user in reference.editor.all %}
+                <p><a href="{% url 'user' user.id %}">{{user.first_name}} {{user.last_name}}</a></p>
+                {%endfor%}
+            </div>
+        </div>
+        {% endif %}
+
     </div>
 
     <br>
@@ -98,6 +113,16 @@
                         </div>
                         <div class="col-9">
                             {{reference.doi}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if reference.year > 0 %}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="form-label">Year:</label>
+                        </div>
+                        <div class="col-9">
+                            {{reference.year}}
                         </div>
                     </div>
                     {% endif %}
@@ -249,39 +274,6 @@
                                 <option value="{{ rank.code }}">{{ rank.code }}</option>
                                 {% endfor %}
                             </select>
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    {% if reference.isbn %}
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label class="form-label">ISBN:</label>
-                        </div>
-                        <div class="col-9">
-                            <input type="text" , class="form-control" , name="isbn" , value="{{reference.isbn}}" required>
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    {% if reference.issn %}
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label class="form-label">ISSN:</label>
-                        </div>
-                        <div class="col-9">
-                            <input type="text" , class="form-control" , name="issn" , value="{{reference.issn}}" required>
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    {% if reference.doi %}
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label class="form-label">DOI:</label>
-                        </div>
-                        <div class="col-9">
-                            <input type="text" , class="form-control" , name="doi" , value="{{reference.doi}}" required>
                         </div>
                     </div>
                     {% endif %}

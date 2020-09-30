@@ -1,7 +1,4 @@
 from rest_framework import viewsets
-from referencemanager.applicationblocks.serializers import UserSerializer, ReferenceSerializer
-from .models import Reference
-
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
@@ -9,14 +6,8 @@ from rest_framework.decorators import api_view, permission_classes
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_exempt
 
-from django.shortcuts import render, redirect
-
-from textx import metamodel_for_language
-from txbibtex import bibfile_str
-
-import unidecode
-import re
-import pprint
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -24,20 +15,29 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
+from django.conf import settings
+
+from django.shortcuts import render, redirect
+
+from textx import metamodel_for_language
+from txbibtex import bibfile_str
+
+from .decorators import *
+
+from time import gmtime, strftime
+from pathlib import Path
+
+import unidecode
+import re
+import pprint
+import os
+import time
+import datetime
+
 from .models import Team, Rank, Reference, Project
 from .forms import CreateUserForm
 from .filters import TeamFilter, ProjectFilter, ReferenceByProjectFilter, ReferenceByRankFilter, ReferenceByTeamFilter, \
     ReferenceByUserFilter, ReferenceFilter, RankFilter
-from temp import tempfile
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
-from django.conf import settings
-import os
-import time
-from .decorators import *
-
-import datetime
-from time import gmtime, strftime
 
 
 # region Deletion
@@ -161,9 +161,9 @@ def referenceProfilePage(request, pk):
                 for key, value in request.POST.items():
                     print(key + ' ' + value)
                     if key not in ['team','project','rank','title','year','isbn','issn', 'doi','key','type','author','editor']:
-                        reference = update_attributes(reference, key, value)
+                        reference = updateAttributes(reference, key, value)
                     else:
-                        reference = update_main_fields(reference, key, value)
+                        reference = updateMainFields(reference, key, value)
 
                 #handle editors update
                 for user in users:
@@ -396,199 +396,7 @@ def forbidden(request):
 
 # endregion Registration and authentication
 
-# region References upload
-
-@login_required(login_url='login')
-def referenceCreationPage(request):
-    context = {}
-    pp = pprint.PrettyPrinter(indent=4)
-
-    references = Reference.objects.all()
-    reference_count = len(references)
-    referenceFilter = ReferenceFilter(request.GET, queryset=references)
-    references = referenceFilter.qs
-
-    successful = 0
-    unsuccessful = 0
-    success_message = ''
-    error_message = ''
-
-    if request.method == 'POST':
-
-        if request.POST.get("export"):
-            print('uso export')
-            writeReferencesToFile(references)
-        else:
-            try:
-                #region Uploaded File Processing
-                uploaded_file = request.FILES['document']
-
-                path = default_storage.save('tmp/references.bib', ContentFile(uploaded_file.read()))
-                path_to_file = default_storage.open(r'tmp\references.bib').name
-
-                bibfile = metamodel_for_language('bibtex').model_from_file(path_to_file)
-                #endregion Uploaded File Processing
-
-                #region Entries Processing
-                for e in bibfile.entries:
-                    if e.__class__.__name__ == 'BibRefEntry':
-
-                        #region Reference Key And Type
-                        key = e.key
-                        type = e.type
-                        #endregion Reference Key And Type
-
-                        # region Field Assigning
-                        author_field = get_field(e, 'author')
-                        title_field = get_field(e, 'title')
-                        doi_field = get_field(e, 'doi')
-                        year_field = get_field(e, 'year')
-                        rank_field = get_field(e, 'rank')
-                        project_field = get_field(e, 'project')
-
-                        editor_field = get_field(e, 'editor')
-                        isbn_field = get_field(e, 'isbn')
-                        issn_field = get_field(e, 'issn')
-                        # endregion Field Assigning
-
-                        # region Value Assigning
-                        try:
-                            author_value = author_field.value.lstrip().rstrip()
-                        except:
-                            author_value = ""
-                        try:
-                            title_value = title_field.value.lstrip().rstrip()
-                        except:
-                            title_value = ""
-                        try:
-                            year_value = year_field.value
-                        except:
-                            year_value = 0
-                        try:
-                            rank_value = rank_field.value.lstrip().rstrip()
-                        except:
-                            rank_value = ""
-                        try:
-                            project_value = project_field.value.lstrip().rstrip()
-                        except:
-                            project_value = ""
-                        try:
-                            isbn_value = isbn_field.value.lstrip().rstrip()
-                        except:
-                            isbn_value = ""
-                        try:
-                            issn_value = issn_field.value.lstrip().rstrip()
-                        except:
-                            issn_value = ""
-                        try:
-                            doi_value = doi_field.value.lstrip().rstrip()
-                        except:
-                            doi_value = ""
-                        try:
-                            editor_value = editor_field.value.lstrip().rstrip()
-                        except:
-                            editor_value = ""
-                        # endregion Value Assigning
-
-                        # region Authors Processing
-                        # gets list of authors (strings)
-                        authors = get_users(author_field)
-                        # trims all strings in a list and writes them to a new list (can't change strings)
-                        resulting_authors = trim_all_strings(authors)
-                        # finds user objects that have the same combination of first name and last name
-                        authors_objects = get_user_objects(resulting_authors)
-                        # endregion Authors Processing
-
-                        # region Duplicate Checking
-                        # if reference entry is a duplicate, then move on to the next entry
-                        if check_if_duplicate(isbn_value, issn_value, doi_value, authors_objects, title_value) is True:
-                            unsuccessful = unsuccessful + 1
-                            continue
-                        # endregion Duplicate Checking
-
-                        # region Editors Processing
-                        # gets list of editors (strings)
-                        try:
-                            editors = get_users(editor_field)
-                        except:
-                            editors = ''
-
-                        # trims all strings in a list and writes them to a new list (can't change strings)
-                        resulting_editors = trim_all_strings(editors)
-                        # finds user objects that have the same combination of first name and last name
-                        editors_objects = get_user_objects(resulting_editors)
-                        # endregion Editors Processing
-
-                        # region Rank Processing
-                        rank = get_rank_object(rank_value)
-                        # endregion Rank Processing
-
-                        # region Team Processing
-                        team = get_team_object(authors_objects)
-                        # endregion Team Processing
-
-                        # region Project Processing
-                        project = get_project_object(project_value)
-                        # endregion Project Processing
-
-                        # region Reference Saving
-                        reference = Reference.objects.create(team=team, project=project, rank=rank, title = title_value, year=year_value,
-                                                             isbn=isbn_value, issn=issn_value, doi=doi_value, key=key, type=type)
-                        successful = successful + 1
-
-                        #saving authors in reference
-                        for author_object in authors_objects:
-                            reference.author.add(author_object)
-
-                        #saving editors in reference
-                        for editor_object in editors_objects:
-                            reference.editor.add(editor_object)
-
-                        #saving the rest of the attributes
-                        fields = get_ref_attr_fields(e)
-                        if fields:
-                            for field in fields:
-                                reference_attribute = ReferenceAttribute.objects.create(name=field.name, value=field.value)
-                                reference.attributes.add(reference_attribute)
-
-                        # endregion Reference Saving
-
-                        reference_count = len(Reference.objects.all())
-            except:
-                error_message = 'Chosen file was not in correct format.'
-                time.sleep(2)
-                path = default_storage.delete(r'tmp\references.bib')
-                return render(request, 'references.html',
-                              {"references": references, "referenceFilter": referenceFilter,
-                               "reference_count": reference_count, "error_message": error_message})
-
-            #endregion Entries Processing
-
-            time.sleep(2)
-            path = default_storage.delete(r'tmp\references.bib')
-
-            #region Messages
-            if successful > 0:
-                if successful == 1:
-                    success_message = 'Successfully uploaded ' + str(successful) + ' reference.'
-                else:
-                    success_message = 'Successfully uploaded ' + str(successful) + ' references.'
-            if unsuccessful > 0:
-                if unsuccessful == 1:
-                    error_message = 'Skipped ' + str(unsuccessful) + ' reference.'
-                else:
-                    error_message = 'Skipped ' + str(unsuccessful) + ' references.'
-            #endregion Messages
-
-            return render(request, 'references.html',
-                          {"references": references, "referenceFilter": referenceFilter, "reference_count": reference_count,
-                           "success_message": success_message, "error_message": error_message})
-
-    reference_count = len(references)
-    references = references.order_by('year')
-    return render(request, 'references.html',
-                  {"references": references, "referenceFilter": referenceFilter, "reference_count": reference_count})
-
+#region References Export
 
 def writeReferencesToFile(references):
     result = ''
@@ -597,7 +405,9 @@ def writeReferencesToFile(references):
             result += writeReferenceInBibTex(reference)
             result += '\n'
 
-    title = 'export' + str(strftime("%Y%m%d-%H%M%S", gmtime())) + '.bib'
+    downloads_path = str(Path.home() / "Downloads")
+    title = downloads_path + '\export' + str(strftime("%Y%m%d-%H%M%S", gmtime())) + '.bib'
+    print(title)
     f = open(title, "w", encoding="utf-8")
     f.write(result)
     f.close()
@@ -684,14 +494,211 @@ def writeAttributes(attributes):
 
     return result
 
+#endregion References Export
 
-def get_fields(e):
+# region References Upload
+
+@login_required(login_url='login')
+def referenceCreationPage(request):
+    context = {}
+    pp = pprint.PrettyPrinter(indent=4)
+
+    references = Reference.objects.all()
+    reference_count = len(references)
+    referenceFilter = ReferenceFilter(request.GET, queryset=references)
+    references = referenceFilter.qs
+
+    successful = 0
+    unsuccessful = 0
+    success_message = ''
+    error_message = ''
+    export_message = ''
+
+    if request.method == 'POST':
+
+        if request.POST.get("export"):
+            print('uso export')
+            writeReferencesToFile(references)
+            export_message = "References successfully exported to your Downloads folder"
+        else:
+            try:
+                #region Uploaded File Processing
+                uploaded_file = request.FILES['document']
+
+                path = default_storage.save(r'tmp\references.bib', ContentFile(uploaded_file.read()))
+                path_to_file = default_storage.open(r'tmp\references.bib').name
+
+                bibfile = metamodel_for_language('bibtex').model_from_file(path_to_file)
+                #endregion Uploaded File Processing
+
+                #region Entries Processing
+                for e in bibfile.entries:
+                    if e.__class__.__name__ == 'BibRefEntry':
+
+                        #region Reference Key And Type
+                        key = e.key
+                        type = e.type
+                        #endregion Reference Key And Type
+
+                        # region Field Assigning
+                        author_field = getField(e, 'author')
+                        title_field = getField(e, 'title')
+                        doi_field = getField(e, 'doi')
+                        year_field = getField(e, 'year')
+                        rank_field = getField(e, 'rank')
+                        project_field = getField(e, 'project')
+
+                        editor_field = getField(e, 'editor')
+                        isbn_field = getField(e, 'isbn')
+                        issn_field = getField(e, 'issn')
+                        # endregion Field Assigning
+
+                        # region Value Assigning
+                        try:
+                            author_value = author_field.value.lstrip().rstrip()
+                        except:
+                            author_value = ""
+                        try:
+                            title_value = title_field.value.lstrip().rstrip()
+                        except:
+                            title_value = ""
+                        try:
+                            year_value = year_field.value
+                        except:
+                            year_value = 0
+                        try:
+                            rank_value = rank_field.value.lstrip().rstrip()
+                        except:
+                            rank_value = ""
+                        try:
+                            project_value = project_field.value.lstrip().rstrip()
+                        except:
+                            project_value = ""
+                        try:
+                            isbn_value = isbn_field.value.lstrip().rstrip()
+                        except:
+                            isbn_value = ""
+                        try:
+                            issn_value = issn_field.value.lstrip().rstrip()
+                        except:
+                            issn_value = ""
+                        try:
+                            doi_value = doi_field.value.lstrip().rstrip()
+                        except:
+                            doi_value = ""
+                        try:
+                            editor_value = editor_field.value.lstrip().rstrip()
+                        except:
+                            editor_value = ""
+                        # endregion Value Assigning
+
+                        # region Authors Processing
+                        # gets list of authors (strings)
+                        authors = getUsers(author_field)
+                        # trims all strings in a list and writes them to a new list (can't change strings)
+                        resulting_authors = trimAllStrings(authors)
+                        # finds user objects that have the same combination of first name and last name
+                        authors_objects = getUserObjects(resulting_authors)
+                        # endregion Authors Processing
+
+                        # region Duplicate Checking
+                        # if reference entry is a duplicate, then move on to the next entry
+                        if checkIfDuplicate(isbn_value, issn_value, doi_value, authors_objects, title_value) is True:
+                            unsuccessful = unsuccessful + 1
+                            continue
+                        # endregion Duplicate Checking
+
+                        # region Editors Processing
+                        # gets list of editors (strings)
+                        try:
+                            editors = getUsers(editor_field)
+                        except:
+                            editors = ''
+
+                        # trims all strings in a list and writes them to a new list (can't change strings)
+                        resulting_editors = trimAllStrings(editors)
+                        # finds user objects that have the same combination of first name and last name
+                        editors_objects =getUserObjects(resulting_editors)
+                        # endregion Editors Processing
+
+                        # region Rank Processing
+                        rank = getRankObject(rank_value)
+                        # endregion Rank Processing
+
+                        # region Team Processing
+                        team = getTeamObject(authors_objects)
+                        # endregion Team Processing
+
+                        # region Project Processing
+                        project = getProjectObject(project_value)
+                        # endregion Project Processing
+
+                        # region Reference Saving
+                        reference = Reference.objects.create(team=team, project=project, rank=rank, title = title_value, year=year_value,
+                                                             isbn=isbn_value, issn=issn_value, doi=doi_value, key=key, type=type)
+                        successful = successful + 1
+
+                        #saving authors in reference
+                        for author_object in authors_objects:
+                            reference.author.add(author_object)
+
+                        #saving editors in reference
+                        for editor_object in editors_objects:
+                            reference.editor.add(editor_object)
+
+                        #saving the rest of the attributes
+                        fields = getRefAttrFields(e)
+                        if fields:
+                            for field in fields:
+                                reference_attribute = ReferenceAttribute.objects.create(name=field.name, value=field.value)
+                                reference.attributes.add(reference_attribute)
+
+                        # endregion Reference Saving
+
+                        reference_count = len(Reference.objects.all())
+            except:
+                error_message = 'Chosen file was not in correct format.'
+                time.sleep(2)
+                path = default_storage.delete(r'tmp\references.bib')
+                return render(request, 'references.html',
+                              {"references": references, "referenceFilter": referenceFilter,
+                               "reference_count": reference_count, "error_message": error_message})
+
+            #endregion Entries Processing
+
+            time.sleep(2)
+            path = default_storage.delete(r'tmp\references.bib')
+
+            #region Messages
+            if successful > 0:
+                if successful == 1:
+                    success_message = 'Successfully uploaded ' + str(successful) + ' reference.'
+                else:
+                    success_message = 'Successfully uploaded ' + str(successful) + ' references.'
+            if unsuccessful > 0:
+                if unsuccessful == 1:
+                    error_message = 'Skipped ' + str(unsuccessful) + ' reference.'
+                else:
+                    error_message = 'Skipped ' + str(unsuccessful) + ' references.'
+            #endregion Messages
+
+            return render(request, 'references.html',
+                          {"references": references, "referenceFilter": referenceFilter, "reference_count": reference_count,
+                           "success_message": success_message, "error_message": error_message})
+
+    reference_count = len(references)
+    references = references.order_by('year')
+    return render(request, 'references.html',
+                  {"references": references, "referenceFilter": referenceFilter, "reference_count": reference_count, "export_message": export_message})
+
+
+def getFields(e):
     fields = [f for f in e.fields]
     if fields:
         return fields
 
 
-def get_ref_attr_fields(e):
+def getRefAttrFields(e):
     fields = [f for f in e.fields]
     resulting_fields = []
     if fields:
@@ -702,7 +709,7 @@ def get_ref_attr_fields(e):
 
 
 # make new list with trimmed names of authors
-def trim_all_strings(strings):
+def trimAllStrings(strings):
     resulting_authors = []
     for author in strings:
         author_without_space = author.lstrip().rstrip()
@@ -712,18 +719,18 @@ def trim_all_strings(strings):
 
 
 # get list of user objects from names in bib file
-def get_user_objects(names):
-    authors_objects = []
-    for res_author in names:
-        for db_author in User.objects.all():
-            if res_author.lower() == (db_author.first_name + ' ' + db_author.last_name).lower():
-                authors_objects.append(db_author)
+def getUserObjects(names):
+    users_objects = []
+    for res_user in names:
+        for db_user in User.objects.all():
+            if res_user.lower() == (db_user.first_name + ' ' + db_user.last_name).lower():
+                users_objects.append(db_user)
 
-    return authors_objects
+    return users_objects
 
 
 # get rank object from code in bib file
-def get_rank_object(rank_name):
+def getRankObject(rank_name):
     for db_rank in Rank.objects.all():
         if rank_name.lower() == db_rank.code.lower():
             return db_rank
@@ -732,7 +739,7 @@ def get_rank_object(rank_name):
 
 
 # get team object from authors in bib file
-def get_team_object(authors_objects):
+def getTeamObject(authors_objects):
     for db_team in Team.objects.all():
         if set(authors_objects) == set(db_team.user.all()):
             return db_team
@@ -740,7 +747,7 @@ def get_team_object(authors_objects):
 
 
 # get project object from code in bib file
-def get_project_object(project_code):
+def getProjectObject(project_code):
     for db_project in Project.objects.all():
         if project_code == db_project.code:
             return db_project
@@ -748,22 +755,15 @@ def get_project_object(project_code):
     return None
 
 
-def check_if_duplicate(isbn, issn, doi, authors, title):
-    # check if reference with the same isbn, issn or doi already exists
-    pp = pprint.PrettyPrinter(indent=4)
+def checkIfDuplicate(isbn, issn, doi, authors, title):
     for db_reference in Reference.objects.all():
-        # pp.pprint(isbn.lower().lstrip().rstrip() + ' ' + db_reference.isbn.lower().lstrip().rstrip())
-        # pp.pprint(doi.lower().lstrip().rstrip() + ' ' + db_reference.doi.lower().lstrip().rstrip())
-        # pp.pprint(issn.lower().lstrip().rstrip() + ' ' + db_reference.issn.lower().lstrip().rstrip())
-        if isbn.lower().lstrip().rstrip() == db_reference.isbn.lower().lstrip().rstrip():
-            if (isbn != ''):
-                return True
-        if issn.lower().lstrip().rstrip() == db_reference.issn.lower().lstrip().rstrip():
-            if (issn != ''):
-                return True
-        if doi.lower().lstrip().rstrip() == db_reference.doi.lower().lstrip().rstrip():
-            if (doi != ''):
-                return True
+        # check if reference with the same isbn, issn or doi already exists
+        if isbn.lower().lstrip().rstrip() == db_reference.isbn.lower().lstrip().rstrip() and isbn != '':
+            return True
+        if issn.lower().lstrip().rstrip() == db_reference.issn.lower().lstrip().rstrip() and issn != '':
+            return True
+        if doi.lower().lstrip().rstrip() == db_reference.doi.lower().lstrip().rstrip() and doi != '':
+            return True
 
         # check if reference with the same authors and title exists
         if list(authors) == list(db_reference.author.all()) and title.lower() == db_reference.title.lower():
@@ -772,23 +772,23 @@ def check_if_duplicate(isbn, issn, doi, authors, title):
     return False
 
 
-def get_field(e, name):
+def getField(e, name):
     fields = [f for f in e.fields if f.name == name]
     if fields:
         return fields[0]
 
 
-def get_author(f):
+def getAuthor(f):
     astr = f.value
     if ' and ' in astr:
         astr = astr.split(' and ')[0]
     if ',' in astr:
         astr = astr.split(',')[0]
         astr = astr.replace(' ', '')
-    return to_key(astr.split()[0])
+    return toKey(astr.split()[0])
 
 
-def get_users(f):
+def getUsers(f):
     result = []
     astr = f.value
     if 'and ' in astr:
@@ -800,18 +800,18 @@ def get_users(f):
     return result
 
 
-def to_key(k):
+def toKey(k):
     nonkeychars = re.compile('[^a-zA-Z0-9]')
     k = unidecode.unidecode(k.strip().lower())
     k = nonkeychars.sub('', k)
     return k
 
-# endregion References upload
+# endregion References Upload
 
 #region References Update
 
-def update_main_fields(reference, key, value):
-    if key in ['title','year','isbn','issn', 'doi','key','type']:
+def updateMainFields(reference, key, value):
+    if key in ['title','year', 'key','type']:
         setattr(reference, key, value)
         reference.save()
     elif key == 'team':
@@ -827,7 +827,7 @@ def update_main_fields(reference, key, value):
     return reference
 
 
-def update_attributes(reference, key, value):
+def updateAttributes(reference, key, value):
     for attribute in reference.attributes.all():
         if attribute.name == key.rstrip(','):
             attribute.value = value
